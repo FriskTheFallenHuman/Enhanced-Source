@@ -8,8 +8,6 @@ globalactors
 	"kleiner"	"male"
 	"monk"		"male"
 	"mossman"	"female"
-	"male_portal_player"	"male"
-	"chell"		"female"
 
 	"male_01"	"male"
 	"male_02"	"male"
