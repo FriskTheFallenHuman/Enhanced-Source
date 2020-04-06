@@ -22,6 +22,10 @@
 #include "fmtstr.h"
 #include "gameweaponmanager.h"
 
+#ifdef HL2MP
+	#include "hl2mp_gamerules.h"
+#endif
+
 #endif
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -702,6 +706,10 @@ void CBaseCombatWeapon::OnPickedUp( CBaseCombatCharacter *pNewOwner )
 	{
 		m_OnNPCPickup.FireOutput(pNewOwner, this);
 	}
+
+#ifdef HL2MP
+	HL2MPRules()->RemoveLevelDesignerPlacedObject( this );
+#endif
 
 	// Someone picked me up, so make it so that I can't be removed.
 	SetRemoveable( false );
@@ -2474,14 +2482,14 @@ BEGIN_DATADESC( CBaseCombatWeapon )
 // don't save these, init to 0 and regenerate
 //	DEFINE_FIELD( m_flNextEmptySoundTime, FIELD_TIME ),
 //	DEFINE_FIELD( m_Activity, FIELD_INTEGER ),
- 	DEFINE_FIELD( m_nIdealSequence, FIELD_INTEGER ),
+	DEFINE_FIELD( m_nIdealSequence, FIELD_INTEGER ),
 	DEFINE_FIELD( m_IdealActivity, FIELD_INTEGER ),
 
 	DEFINE_FIELD( m_fFireDuration, FIELD_FLOAT ),
 
 	DEFINE_FIELD( m_bReloadsSingly, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_iSubType, FIELD_INTEGER ),
- 	DEFINE_FIELD( m_bRemoveable, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bRemoveable, FIELD_BOOLEAN ),
 
 	DEFINE_FIELD( m_flUnlockTime,		FIELD_TIME ),
 	DEFINE_FIELD( m_hLocker,			FIELD_EHANDLE ),

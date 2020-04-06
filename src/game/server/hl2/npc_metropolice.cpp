@@ -549,12 +549,12 @@ bool CNPC_MetroPolice::OverrideMoveFacing( const AILocalMoveGoal_t &move, float 
 	// Don't do this if we're scripted
 	if ( IsInAScript() )
 		return BaseClass::OverrideMoveFacing( move, flInterval );
-  	
+	
 	// ROBIN: Disabled at request of mapmakers for now
 	/*
-  	// If we're moving during a police sequence, always face our target
+	// If we're moving during a police sequence, always face our target
 	if ( m_PolicingBehavior.IsEnabled() )
-  	{	
+	{	
 		CBaseEntity *pTarget = m_PolicingBehavior.GetGoalTarget();
 
 		if ( pTarget )
@@ -2221,7 +2221,7 @@ Vector CNPC_MetroPolice::ComputeBurstTrajectory( const Vector &shootOrigin )
 			(vecNormalizedPt.y >= -0.1f) && (vecNormalizedPt.y <= 1.1f) &&
 			(vecNormalizedPt.z >= -0.7f) && (vecNormalizedPt.z < 1.1f) )
 		{
- 			vecPos.z = pEnemy->WorldSpaceCenter().z;
+			vecPos.z = pEnemy->WorldSpaceCenter().z;
 		}
 	}
 

@@ -390,7 +390,7 @@ void C_ClientRagdoll::OnRestore( void )
 	AddToLeafSystem( false );
 
 	DestroyShadow();
- 	CreateShadow();
+	CreateShadow();
 
 	SetNextClientThink( CLIENT_THINK_ALWAYS );
 	
@@ -2635,8 +2635,8 @@ static void PostThreadedBoneSetup()
 	mdlcache->EndLock();
 	mdlcache->EndCoarseLock();
 #ifdef DEBUG_BONE_SETUP_THREADING
- 	Msg( "  %x done, %d\n", ThreadGetCurrentId(), (int)(*pCount) );
- 	(*pCount) = 0;
+	Msg( "  %x done, %d\n", ThreadGetCurrentId(), (int)(*pCount) );
+	(*pCount) = 0;
 #endif
 }
 
@@ -4141,6 +4141,7 @@ void C_BaseAnimating::FireEvent( const Vector& origin, const QAngle& angles, int
 
 	case CL_EVENT_FOOTSTEP_LEFT:
 		{
+#ifndef HL2MP
 			char pSoundName[256];
 			if ( !options || !options[0] )
 			{
@@ -4160,11 +4161,13 @@ void C_BaseAnimating::FireEvent( const Vector& origin, const QAngle& angles, int
 				Q_snprintf( pSoundName, 256, "%s.FootstepLeft", options );
 			}
 			EmitSound( pSoundName );
+#endif
 		}
 		break;
 
 	case CL_EVENT_FOOTSTEP_RIGHT:
 		{
+#ifndef HL2MP
 			char pSoundName[256];
 			if ( !options || !options[0] )
 			{
@@ -4183,6 +4186,7 @@ void C_BaseAnimating::FireEvent( const Vector& origin, const QAngle& angles, int
 				Q_snprintf( pSoundName, 256, "%s.FootstepRight", options );
 			}
 			EmitSound( pSoundName );
+#endif
 		}
 		break;
 
@@ -5095,7 +5099,7 @@ bool C_BaseAnimating::InitAsClientRagdoll( const matrix3x4_t *pDeltaBones0, cons
 	// Now set the dieragdoll sequence to get transforms for all
 	// non-simulated bones
 	m_nRestoreSequence = GetSequence();
-    SetSequence( SelectWeightedSequence( ACT_DIERAGDOLL ) );
+	SetSequence( SelectWeightedSequence( ACT_DIERAGDOLL ) );
 	m_nPrevSequence = GetSequence();
 	m_flPlaybackRate = 0;
 	UpdatePartitionListEntry();
@@ -5594,7 +5598,7 @@ void C_BaseAnimating::StudioFrameAdvance()
 		}
 		else
 		{
-		 	 flNewCycle = (flNewCycle < 0.0f) ? 0.0f : 1.0f;
+			 flNewCycle = (flNewCycle < 0.0f) ? 0.0f : 1.0f;
 		}
 		
 		m_bSequenceFinished = true;	// just in case it wasn't caught in GetEvents

@@ -22,7 +22,7 @@ $Project
 		$File	"ai_eventresponse.cpp"
 		$File	"ai_eventresponse.h"
 		$File	"ai_relationship.cpp"
-		$File	"base_gameinterface.cpp"
+		$File	"base_gameinterface.cpp"  [!$HL2MP]
 		$File	"basegrenade_concussion.cpp"
 		$File	"basegrenade_contact.cpp"
 		$File	"basegrenade_timed.cpp"
@@ -43,9 +43,9 @@ $Project
 		$File	"$SRCDIR\game\shared\touchlink.h"
 		$File	"vehicle_choreo_generic.cpp"
 		$File	"$SRCDIR\game\shared\vehicle_choreo_generic_shared.h"
-		$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"
+		$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"   [!$HL2MP]
 
-		$Folder	"Multiplayer"
+		$Folder	"Multiplayer"  [!$HL2MP]
 		{
 			$File	"multiplayer\basenetworkedplayer.h"
 			$File	"multiplayer\basenetworkedplayer.cpp"
@@ -63,8 +63,8 @@ $Project
 		
 		$Folder	"HL2 DLL"
 		{
-			$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"
-			$File	"$SRCDIR\game\shared\achievements_hlx.cpp"
+			$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"  [!$HL2MP]
+			$File	"$SRCDIR\game\shared\achievements_hlx.cpp"  [!$HL2MP]
 			$File	"hl2\ai_allymanager.cpp"
 			$File	"hl2\ai_behavior_actbusy.cpp"
 			$File	"hl2\ai_behavior_actbusy.h"
@@ -120,7 +120,7 @@ $Project
 			$File	"hl2\grenade_frag.cpp"
 			$File	"hl2\grenade_frag.h"
 			$File	"hl2\hl2_ai_network.cpp"
-			$File	"hl2\hl2_client.cpp"
+			$File	"hl2\hl2_client.cpp"  [!$HL2MP]
 			$File	"hl2\hl2_eventlog.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl2_gamerules.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl2_gamerules.h"
@@ -237,29 +237,29 @@ $Project
 			$File	"hl2\vehicle_jeep.cpp"
 			$File	"hl2\vehicle_prisoner_pod.cpp"
 			$File	"hl2\vehicle_viewcontroller.cpp"
-			$File	"hl2\weapon_357.cpp"
+			$File	"hl2\weapon_357.cpp"  [!$HL2MP]
 			$File	"hl2\weapon_alyxgun.cpp"
 			$File	"hl2\weapon_alyxgun.h"
 			$File	"hl2\weapon_annabelle.cpp"
-			$File	"hl2\weapon_ar2.cpp"
-			$File	"hl2\weapon_ar2.h"
+			$File	"hl2\weapon_ar2.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_ar2.h"  [!$HL2MP]
 			$File	"hl2\weapon_bugbait.cpp"
 			$File	"hl2\weapon_citizenpackage.cpp"
 			$File	"hl2\weapon_citizenpackage.h"
-			$File	"hl2\weapon_crossbow.cpp"
-			$File	"hl2\weapon_crowbar.cpp"
-			$File	"hl2\weapon_crowbar.h"
+			$File	"hl2\weapon_crossbow.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_crowbar.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_crowbar.h"  [!$HL2MP]
 			$File	"weapon_cubemap.cpp"
-			$File	"hl2\weapon_frag.cpp"
-			$File	"hl2\weapon_physcannon.cpp"
-			$File	"hl2\weapon_physcannon.h"
-			$File	"hl2\weapon_pistol.cpp"
-			$File	"hl2\weapon_rpg.cpp"
-			$File	"hl2\weapon_rpg.h"
-			$File	"hl2\weapon_shotgun.cpp"
-			$File	"hl2\weapon_smg1.cpp"
-			$File	"hl2\weapon_stunstick.cpp"
-			$File	"hl2\weapon_stunstick.h"
+			$File	"hl2\weapon_frag.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_physcannon.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_physcannon.h"  [!$HL2MP]
+			$File	"hl2\weapon_pistol.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_rpg.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_rpg.h"  [!$HL2MP]
+			$File	"hl2\weapon_shotgun.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_smg1.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_stunstick.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_stunstick.h"  [!$HL2MP]
 
 			$Folder	"Unused"
 			{

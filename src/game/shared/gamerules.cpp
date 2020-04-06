@@ -313,8 +313,8 @@ bool IsExplosionTraceBlocked( trace_t *ptr )
 		// All doors are push, but not all things that push are doors. This 
 		// narrows the search before we start to do classname compares.
 		if( FClassnameIs(ptr->m_pEnt, "prop_door_rotating") ||
-        FClassnameIs(ptr->m_pEnt, "func_door") ||
-        FClassnameIs(ptr->m_pEnt, "func_door_rotating") )
+		FClassnameIs(ptr->m_pEnt, "func_door") ||
+		FClassnameIs(ptr->m_pEnt, "func_door_rotating") )
 			return true;
 	}
 
@@ -693,11 +693,13 @@ bool CGameRules::ShouldCollide( int collisionGroup0, int collisionGroup1 )
 		V_swap(collisionGroup0,collisionGroup1);
 	}
 
+#ifndef HL2MP
 	if ( (collisionGroup0 == COLLISION_GROUP_PLAYER || collisionGroup0 == COLLISION_GROUP_PLAYER_MOVEMENT) &&
 		collisionGroup1 == COLLISION_GROUP_PUSHAWAY )
 	{
 		return false;
 	}
+#endif
 
 	if ( collisionGroup0 == COLLISION_GROUP_DEBRIS && collisionGroup1 == COLLISION_GROUP_PUSHAWAY )
 	{
@@ -745,12 +747,12 @@ bool CGameRules::ShouldCollide( int collisionGroup0, int collisionGroup1 )
 	if ( collisionGroup0 == COLLISION_GROUP_INTERACTIVE_DEBRIS && collisionGroup1 == COLLISION_GROUP_INTERACTIVE_DEBRIS )
 		return false;
 
+#ifndef HL2MP
 	// This change was breaking HL2DM
 	// Adrian: TEST! Interactive Debris doesn't collide with the player.
 	if ( collisionGroup0 == COLLISION_GROUP_INTERACTIVE_DEBRIS && ( collisionGroup1 == COLLISION_GROUP_PLAYER_MOVEMENT || collisionGroup1 == COLLISION_GROUP_PLAYER ) )
 		 return false;
-
-
+#endif
 
 	if ( collisionGroup0 == COLLISION_GROUP_BREAKABLE_GLASS && collisionGroup1 == COLLISION_GROUP_BREAKABLE_GLASS )
 		return false;

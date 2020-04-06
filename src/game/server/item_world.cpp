@@ -13,6 +13,10 @@
 #include "iservervehicle.h"
 #include "physics_saverestore.h"
 
+#ifdef HL2MP
+#include "hl2mp_gamerules.h"
+#endif
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -92,6 +96,11 @@ BEGIN_DATADESC( CItem )
 	DEFINE_ENTITYFUNC( ItemTouch ),
 	DEFINE_THINKFUNC( Materialize ),
 	DEFINE_THINKFUNC( ComeToRest ),
+
+#if defined( HL2MP )
+	DEFINE_FIELD( m_flNextResetCheckTime, FIELD_TIME ),
+	DEFINE_THINKFUNC( FallThink ),
+#endif
 
 	// Outputs
 	DEFINE_OUTPUT( m_OnPlayerTouch, "OnPlayerTouch" ),
@@ -212,6 +221,11 @@ void CItem::Spawn( void )
 	NetworkQuantize( origin, angles );
 	SetAbsOrigin( origin );
 	SetAbsAngles( angles );
+
+#if defined( HL2MP )
+	SetThink( &CItem::FallThink );
+	SetNextThink( gpGlobals->curtime + 0.1f );
+#endif
 }
 
 void CItem::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
@@ -232,10 +246,16 @@ extern int gEvilImpulse101;
 //-----------------------------------------------------------------------------
 void CItem::ActivateWhenAtRest()
 {
+	// Andrew; This doesn't work, default to HL2MP spawn behavior.
+#if !defined( HL2MP )
 	RemoveSolidFlags( FSOLID_TRIGGER );
 	m_bActivateWhenAtRest = true;
 	SetThink( &CItem::ComeToRest );
 	SetNextThink( gpGlobals->curtime + 0.5f );
+#else
+	SetThink( &CItem::FallThink );
+	SetNextThink( gpGlobals->curtime + 0.1f );
+#endif
 }
 
 
@@ -273,6 +293,39 @@ void CItem::ComeToRest( void )
 	}
 }
 
+#if defined( HL2MP )
+//-----------------------------------------------------------------------------
+// Purpose: Items that have just spawned run this think to catch them when 
+//			they hit the ground. Once we're sure that the object is grounded, 
+//			we change its solid type to trigger and set it in a large box that 
+//			helps the player get it.
+//-----------------------------------------------------------------------------
+void CItem::FallThink ( void )
+{
+	SetNextThink( gpGlobals->curtime + 0.1f );
+
+	bool shouldMaterialize = false;
+	IPhysicsObject *pPhysics = VPhysicsGetObject();
+	if ( pPhysics )
+	{
+		shouldMaterialize = pPhysics->IsAsleep();
+	}
+	else
+	{
+		shouldMaterialize = (GetFlags() & FL_ONGROUND) ? true : false;
+	}
+
+	if ( shouldMaterialize )
+	{
+		SetThink ( NULL );
+
+		m_vOriginalSpawnOrigin = GetAbsOrigin();
+		m_vOriginalSpawnAngles = GetAbsAngles();
+
+		HL2MPRules()->AddLevelDesignerPlacedObject( this );
+	}
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: Used to tell whether an item may be picked up by the player.  This
@@ -388,6 +441,9 @@ void CItem::ItemTouch( CBaseEntity *pOther )
 		else
 		{
 			UTIL_Remove( this );
+#ifdef HL2MP
+			HL2MPRules()->RemoveLevelDesignerPlacedObject( this );
+#endif
 
 		}
 	}
@@ -429,8 +485,11 @@ void CItem::Materialize( void )
 	if ( IsEffectActive( EF_NODRAW ) )
 	{
 		// changing from invisible state to visible.
-
+#ifdef HL2MP
+		EmitSound( "AlyxEmp.Charge" );
+#else
 		EmitSound( "Item.Materialize" );
+#endif
 		RemoveEffects( EF_NODRAW );
 		DoMuzzleFlash();
 	}

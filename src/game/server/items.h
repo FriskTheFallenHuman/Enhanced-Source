@@ -77,7 +77,15 @@ public:
 	void	SetOriginalSpawnAngles( const QAngle& angles ) { m_vOriginalSpawnAngles = angles; }
 	bool	CreateItemVPhysicsObject( void );
 	bool	ItemCanBeTouchedByPlayer( CBasePlayer *pPlayer );
+
+#if defined( HL2MP )
+	void	FallThink( void );
+	float  m_flNextResetCheckTime;
+#endif
+
 	DECLARE_DATADESC();
+
+
 private:
 	void ComeToRest( void );
 

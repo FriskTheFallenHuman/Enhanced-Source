@@ -3,13 +3,11 @@
 	game 		"Deferred Example"
 	title 		"Deferred Example"
 	type		singleplayer_only
+	"icon"		"game"
 
-        "icon"		"game"
-	type		singleplayer_only
 	nodifficulty	1
 	nodegraph 0
 	SupportsDX8 0
-
 
 	FileSystem
 	{

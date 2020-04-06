@@ -1,0 +1,288 @@
+//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//
+// Purpose: 
+//
+// $NoKeywords: $
+//=============================================================================//
+#include "cbase.h"
+#include "in_buttons.h"
+#include "takedamageinfo.h"
+#include "ammodef.h"
+#include "hl2mp_gamerules.h"
+#include "weapon_hl2mpbase.h"
+
+#if defined( CLIENT_DLL )
+	#include "c_hl2mp_player.h"
+#else
+	#include "hl2mp_player.h"
+	#include "vphysics/constraints.h"
+#endif
+
+// ----------------------------------------------------------------------------- //
+// Global functions.
+// ----------------------------------------------------------------------------- //
+bool IsAmmoType( int iAmmoType, const char *pAmmoName )
+{
+	return GetAmmoDef()->Index( pAmmoName ) == iAmmoType;
+}
+
+// ----------------------------------------------------------------------------- //
+// CWeaponHL2MPBase tables.
+// ----------------------------------------------------------------------------- //
+IMPLEMENT_NETWORKCLASS_ALIASED( WeaponHL2MPBase, DT_WeaponHL2MPBase )
+
+BEGIN_NETWORK_TABLE( CWeaponHL2MPBase, DT_WeaponHL2MPBase )
+END_NETWORK_TABLE()
+
+BEGIN_PREDICTION_DATA( CWeaponHL2MPBase ) 
+END_PREDICTION_DATA()
+
+#ifdef GAME_DLL
+BEGIN_DATADESC( CWeaponHL2MPBase )
+END_DATADESC()
+#endif
+
+// ----------------------------------------------------------------------------- //
+// CWeaponHL2MPBase implementation. 
+// ----------------------------------------------------------------------------- //
+CWeaponHL2MPBase::CWeaponHL2MPBase()
+{
+	SetPredictionEligible( true );
+	AddSolidFlags( FSOLID_TRIGGER ); // Nothing collides with these but it gets touches.
+
+	m_flNextResetCheckTime = 0.0f;
+}
+
+//Tony; override for animation purposes.
+bool CWeaponHL2MPBase::Reload( void )
+{
+	bool fRet = DefaultReload( GetMaxClip1(), GetMaxClip2(), ACT_VM_RELOAD );
+	if ( fRet )
+		ToHL2MPPlayer( GetOwner() )->DoAnimationEvent( PLAYERANIMEVENT_RELOAD );
+
+	return fRet;
+}
+
+void CWeaponHL2MPBase::WeaponSound( WeaponSound_t sound_type, float soundtime /* = 0.0f */ )
+{
+#ifdef CLIENT_DLL
+		// If we have some sounds from the weapon classname.txt file, play a random one of them
+		const char *shootsound = GetWpnData().aShootSounds[ sound_type ]; 
+		if ( !shootsound || !shootsound[0] )
+			return;
+
+		CBroadcastRecipientFilter filter; // this is client side only
+		if ( !te->CanPredict() )
+			return;
+				
+		CBaseEntity::EmitSound( filter, GetPlayerOwner()->entindex(), shootsound, &GetPlayerOwner()->GetAbsOrigin() ); 
+#else
+		BaseClass::WeaponSound( sound_type, soundtime );
+#endif
+}
+
+CBasePlayer* CWeaponHL2MPBase::GetPlayerOwner() const
+{
+	return dynamic_cast< CBasePlayer* >( GetOwner() );
+}
+
+CHL2MP_Player* CWeaponHL2MPBase::GetHL2MPPlayerOwner() const
+{
+	return dynamic_cast< CHL2MP_Player* >( GetOwner() );
+}
+
+#ifdef CLIENT_DLL	
+void CWeaponHL2MPBase::OnDataChanged( DataUpdateType_t type )
+{
+	BaseClass::OnDataChanged( type );
+
+	if ( GetPredictable() && !ShouldPredict() )
+		ShutdownPredictable();
+}
+
+
+bool CWeaponHL2MPBase::ShouldPredict()
+{
+	if ( GetOwner() && GetOwner() == C_BasePlayer::GetLocalPlayer() )
+		return true;
+
+	return BaseClass::ShouldPredict();
+}
+#else	
+void CWeaponHL2MPBase::Spawn()
+{
+	BaseClass::Spawn();
+
+	// Set this here to allow players to shoot dropped weapons
+	SetCollisionGroup( COLLISION_GROUP_WEAPON );
+}
+
+void CWeaponHL2MPBase::Materialize( void )
+{
+	if ( IsEffectActive( EF_NODRAW ) )
+	{
+		// changing from invisible state to visible.
+		EmitSound( "AlyxEmp.Charge" );
+		
+		RemoveEffects( EF_NODRAW );
+		DoMuzzleFlash();
+	}
+
+	if ( HasSpawnFlags( SF_NORESPAWN ) == false )
+	{
+		VPhysicsInitNormal( SOLID_BBOX, GetSolidFlags() | FSOLID_TRIGGER, false );
+		SetMoveType( MOVETYPE_VPHYSICS );
+
+		HL2MPRules()->AddLevelDesignerPlacedObject( this );
+	}
+
+	if ( HasSpawnFlags( SF_NORESPAWN ) == false )
+	{
+		if ( GetOriginalSpawnOrigin() == vec3_origin )
+		{
+			m_vOriginalSpawnOrigin = GetAbsOrigin();
+			m_vOriginalSpawnAngles = GetAbsAngles();
+		}
+	}
+
+	SetPickupTouch();
+
+	SetThink (NULL);
+}
+
+int CWeaponHL2MPBase::ObjectCaps()
+{
+	return BaseClass::ObjectCaps() & ~FCAP_IMPULSE_USE;
+}
+
+#endif
+
+void CWeaponHL2MPBase::FallInit( void )
+{
+#ifndef CLIENT_DLL
+	SetModel( GetWorldModel() );
+	VPhysicsDestroyObject();
+
+	if ( HasSpawnFlags( SF_NORESPAWN ) == false )
+	{
+		SetMoveType( MOVETYPE_NONE );
+		SetSolid( SOLID_BBOX );
+		AddSolidFlags( FSOLID_TRIGGER );
+
+		UTIL_DropToFloor( this, MASK_SOLID );
+	}
+	else
+	{
+		if ( !VPhysicsInitNormal( SOLID_BBOX, GetSolidFlags() | FSOLID_TRIGGER, false ) )
+		{
+			SetMoveType( MOVETYPE_NONE );
+			SetSolid( SOLID_BBOX );
+			AddSolidFlags( FSOLID_TRIGGER );
+		}
+		else
+		{
+			// Constrained start?
+			if ( HasSpawnFlags( SF_WEAPON_START_CONSTRAINED ) )
+			{
+				//Constrain the weapon in place
+				IPhysicsObject *pReferenceObject, *pAttachedObject;
+				
+				pReferenceObject = g_PhysWorldObject;
+				pAttachedObject = VPhysicsGetObject();
+
+				if ( pReferenceObject && pAttachedObject )
+				{
+					constraint_fixedparams_t fixed;
+					fixed.Defaults();
+					fixed.InitWithCurrentObjectState( pReferenceObject, pAttachedObject );
+					
+					fixed.constraint.forceLimit	= lbs2kg( 10000 );
+					fixed.constraint.torqueLimit = lbs2kg( 10000 );
+
+					IPhysicsConstraint *pConstraint = GetConstraint();
+
+					pConstraint = physenv->CreateFixedConstraint( pReferenceObject, pAttachedObject, NULL, fixed );
+
+					pConstraint->SetGameData( (void *) this );
+				}
+			}
+		}
+	}
+
+	SetPickupTouch();
+	
+	SetThink( &CWeaponHL2MPBase::FallThink );
+
+	SetNextThink( gpGlobals->curtime + 0.1f );
+#endif
+}
+
+#ifdef GAME_DLL
+void CWeaponHL2MPBase::FallThink( void )
+{
+	// Prevent the common HL2DM weapon respawn bug from happening
+	// When a weapon is spawned, the following chain of events occurs:
+	// - Spawn() is called (duh), which then calls FallInit()
+	// - FallInit() is called, and prepares the weapon's 'Think' function (CBaseCombatWeapon::FallThink())
+	// - FallThink() is called, and performs several checks before deciding whether the weapon should Materialize()
+	// - Materialize() is called (the HL2DM version above), which sets the weapon's respawn location.
+	// The problem occurs when a weapon isn't placed properly by a level designer.
+	// If the weapon is unable to move from its location (e.g. if its bounding box is halfway inside a wall), Materialize() never gets called.
+	// Since Materialize() never gets called, the weapon's respawn location is never set, so if a person picks it up, it respawns forever at
+	// 0 0 0 on the map (infinite loop of fall, wait, respawn, not nice at all for performance and bandwidth!)
+	if ( HasSpawnFlags( SF_NORESPAWN ) == false )
+	{
+		if ( GetOriginalSpawnOrigin() == vec3_origin )
+		{
+			m_vOriginalSpawnOrigin = GetAbsOrigin();
+			m_vOriginalSpawnAngles = GetAbsAngles();
+		}
+	}
+
+	return BaseClass::FallThink();
+}
+#endif // GAME_DLL
+
+const CHL2MPSWeaponInfo &CWeaponHL2MPBase::GetHL2MPWpnData() const
+{
+	const FileWeaponInfo_t *pWeaponInfo = &GetWpnData();
+	const CHL2MPSWeaponInfo *pHL2MPInfo;
+
+#ifdef _DEBUG
+	pHL2MPInfo = dynamic_cast< const CHL2MPSWeaponInfo* >( pWeaponInfo );
+	Assert( pHL2MPInfo );
+#else
+	pHL2MPInfo = static_cast< const CHL2MPSWeaponInfo* >( pWeaponInfo );
+#endif
+
+	return *pHL2MPInfo;
+}
+
+void CWeaponHL2MPBase::FireBullets( const FireBulletsInfo_t &info )
+{
+	FireBulletsInfo_t modinfo = info;
+
+	modinfo.m_flPlayerDamage = GetHL2MPWpnData().m_iPlayerDamage;
+
+	BaseClass::FireBullets( modinfo );
+}
+
+
+#if defined( CLIENT_DLL )
+void UTIL_ClipPunchAngleOffset( QAngle &in, const QAngle &punch, const QAngle &clip )
+{
+	QAngle	final = in + punch;
+
+	//Clip each component
+	for ( int i = 0; i < 3; i++ )
+	{
+		if ( final[i] > clip[i] )
+			final[i] = clip[i];
+		else if ( final[i] < -clip[i] )
+			final[i] = -clip[i];
+
+		//Return the result
+		in[i] = final[i] - punch[i];
+	}
+}
+#endif

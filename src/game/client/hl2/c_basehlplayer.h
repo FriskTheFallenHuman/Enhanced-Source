@@ -11,72 +11,82 @@
 #ifdef _WIN32
 #pragma once
 #endif
-//#define HL2_PLAYERANIMSTATE //uncomment for global hl2_playeranimstate across projects.
 
-#include "c_baseplayer.h"
+//#define HL2_PLAYERANIMSTATE //uncomment for global hl2_playeranimstate across projects.
 #include "c_hl2_playerlocaldata.h"
-#include "multiplayer/basenetworkedplayer_cl.h"
-#ifdef HL2_PLAYERANIMSTATE
-#include "hl2_playeranimstate.h"
+
+#ifndef HL2_PLAYERANIMSTATE
+	#include "c_baseplayer.h"
+#else
+	#include "multiplayer/basenetworkedplayer_cl.h"
+	#include "hl2_playeranimstate.h"
 #endif
-class C_BaseHLPlayer : public C_BaseNetworkedPlayer
+
+
+class C_BaseHLPlayer 
+#ifndef HL2_PLAYERANIMSTATE
+	: public C_BasePlayer
+#else
+	: public C_BaseNetworkedPlayer
+#endif
 {
 public:
-	DECLARE_CLASS( C_BaseHLPlayer, C_BaseNetworkedPlayer);
+
+#ifndef HL2_PLAYERANIMSTATE
+	DECLARE_CLASS( C_BaseHLPlayer, C_BasePlayer );
+#else
+	DECLARE_CLASS( C_BaseHLPlayer, C_BaseNetworkedPlayer );
+#endif
+
 	DECLARE_CLIENTCLASS();
 	DECLARE_PREDICTABLE();
 
-						C_BaseHLPlayer();
+	C_BaseHLPlayer();
 
-						
-						
-						virtual void		OnDataChanged(DataUpdateType_t updateType);
+	virtual void		OnDataChanged( DataUpdateType_t updateType );
+
 #ifdef HL2_PLAYERANIMSTATE
-						//DM -hl2 portal-animstate reimplementation.
-						//to use, define HL2_PLAYERANIMSTATE in preprocessor defs.
-						~C_BaseHLPlayer(void); //redundant from portal
-						void ClientThink(void);
-						virtual void		OnPreDataChanged(DataUpdateType_t type);
-						virtual void		PostDataUpdate(DataUpdateType_t updateType);
+	//DM -hl2 portal-animstate reimplementation.
+	//to use, define HL2_PLAYERANIMSTATE in preprocessor defs.
+	~C_BaseHLPlayer( void ); //redundant from portal
+	void ClientThink( void );
+	virtual void	OnPreDataChanged( DataUpdateType_t type );
+	virtual void	PostDataUpdate( DataUpdateType_t updateType );
 
 						
-						virtual void			PreThink(void);
-						virtual void UpdateClientSideAnimation();
-						void DoAnimationEvent(PlayerAnimEvent_t event, int nData);
-						QAngle GetAnimEyeAngles(void) { return m_angEyeAngles; }
-						virtual const QAngle&	EyeAngles();
-						virtual const QAngle& GetRenderAngles();
-						CInterpolatedVar< QAngle >	m_iv_angEyeAngles;
-						virtual void Spawn(void);
-						CHL2PlayerAnimState *m_PlayerAnimState;
-						QAngle	m_angEyeAngles;
-						int	m_headYawPoseParam;
-						int	m_headPitchPoseParam;
-						float m_headYawMin;
-						float m_headYawMax;
-						float m_headPitchMin;
-						float m_headPitchMax;
-						void	UpdateLookAt(void);
-						void	Initialize(void);
-						virtual CStudioHdr*		OnNewModel(void);
-						// Used by prediction, sets the view angles for the player
-						virtual void SetLocalViewAngles(const QAngle &viewAngles);
-						virtual void SetViewAngles(const QAngle &ang);
-						struct PreDataChanged_Backup_t
-						{
-							//Vector					m_ptPlayerPosition;
-							QAngle					m_qEyeAngles;
-						} PreDataChanged_Backup;
+	virtual void	PreThink( void );
+	virtual void UpdateClientSideAnimation();
+	void DoAnimationEvent( PlayerAnimEvent_t event, int nData );
+	QAngle GetAnimEyeAngles( void ) { return m_angEyeAngles; }
+	virtual const QAngle&	EyeAngles();
+	virtual const QAngle& GetRenderAngles();
+	CInterpolatedVar< QAngle >	m_iv_angEyeAngles;
+	virtual void Spawn( void );
+	CHL2PlayerAnimState *m_PlayerAnimState;
+	QAngle	m_angEyeAngles;
+	int	m_headYawPoseParam;
+	int	m_headPitchPoseParam;
+	float m_headYawMin;
+	float m_headYawMax;
+	float m_headPitchMin;
+	float m_headPitchMax;
+	void	UpdateLookAt( void );
+	void	Initialize( void );
+	virtual CStudioHdr*		OnNewModel( void );
+	// Used by prediction, sets the view angles for the player
+	virtual void SetLocalViewAngles( const QAngle &viewAngles );
+	virtual void SetViewAngles( const QAngle &ang );
+	struct PreDataChanged_Backup_t
+	{
+		//Vector					m_ptPlayerPosition;
+		QAngle					m_qEyeAngles;
+	} PreDataChanged_Backup;
 
-						float m_flLastBodyYaw;
-						float m_flCurrentHeadYaw;
-						float m_flCurrentHeadPitch;
-						float m_flStartLookTime;
-#endif
-
-						
-
-						
+	float m_flLastBodyYaw;
+	float m_flCurrentHeadYaw;
+	float m_flCurrentHeadPitch;
+	float m_flStartLookTime;
+#endif			
 
 	void				Weapon_DropPrimary( void );
 		

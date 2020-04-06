@@ -64,6 +64,12 @@ void CHudVoiceSelfStatus::ApplySchemeSettings(vgui::IScheme *pScheme)
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 
+#ifdef HL2MP
+	SetBgColor( Color( 0, 0, 0, 0 ) );
+#endif
+
+	SetPaintBackgroundEnabled( false );
+
 }
 
 void CHudVoiceSelfStatus::VidInit( void )
@@ -178,6 +184,12 @@ CHudVoiceStatus::CHudVoiceStatus( const char *pName ) :
 void CHudVoiceStatus::ApplySchemeSettings(vgui::IScheme *pScheme)
 {
 	BaseClass::ApplySchemeSettings( pScheme );
+
+#ifdef HL2MP
+	SetBgColor( Color( 0, 0, 0, 0 ) );
+#endif
+
+	SetPaintBackgroundEnabled( false );
 }
 
 void CHudVoiceStatus::Init( void )
@@ -209,7 +221,7 @@ bool CHudVoiceStatus::ShouldDraw()
 
 void CHudVoiceStatus::Paint()
 {
-   	if( !m_pVoiceIcon )
+	if( !m_pVoiceIcon )
 		return;
 	
 	int x, y, w, h;

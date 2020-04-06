@@ -3,13 +3,9 @@
 	game 		"Portal"
 	title 		"Portal"
 	type		singleplayer_only
+	"icon"		"game"
 
-        "icon"		"game"
-	type		singleplayer_only
-	nodifficulty	1
-	nodegraph 0
 	SupportsDX8 0
-
 
 	FileSystem
 	{
@@ -38,6 +34,12 @@
 		{
 			// Look for our content under our gamepath. pak01_dir will be read first, then loose files.
 			Game				|gameinfo_path|.
+			
+			// This has the portal assets.
+			Game				portal
+			
+			// This has the hl2 assets.
+			Game				hl2
 
 			// Like the Source 2006 base, you need to include this folder as it has ALL of the content that is mostly shared.
 			Game				core

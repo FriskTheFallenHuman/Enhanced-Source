@@ -6,7 +6,11 @@
 
 #include "gamemovement.h"
 #include "func_ladder.h"
-#include "multiplayer/basenetworkedplayer_gamemove.h"
+
+#ifdef HL2_PLAYERANIMSTATE
+#include "multiplayer/basenetworkedplayer_gamemove.h"  
+#endif // HL2_PLAYERANIMSTATE
+
 
 #if defined( CLIENT_DLL )
 
@@ -30,9 +34,20 @@ struct NearbyDismount_t
 //-----------------------------------------------------------------------------
 // Purpose: HL2 specific movement code
 //-----------------------------------------------------------------------------
-class CHL2GameMovement : public CNetworkedPlayerMovement
+class CHL2GameMovement 
+#ifdef HL2_PLAYERANIMSTATE
+	: public CNetworkedPlayerMovement
+#else
+	: public CGameMovement
+#endif // HL2_PLAYERANIMSTATE
 {
+
+#ifdef HL2_PLAYERANIMSTATE
 	typedef CNetworkedPlayerMovement BaseClass;
+#else
+	typedef CGameMovement BaseClass;
+#endif // HL2_PLAYERANIMSTATE
+
 public:
 
 	CHL2GameMovement();

@@ -69,7 +69,6 @@ $Project
 		$File	"ai_speechqueue.h"
 		$File	"ambientgeneric.cpp"
 		$File	"ambientgeneric.h"
-		$File	"base_gameinterface.cpp"
 		$File	"beamspotlight.cpp"
 		$File	"$SRCDIR\public\tools\bonelist.cpp"
 		$File	"cbaseprojectile.cpp"

@@ -12,10 +12,16 @@
 #include "hl2_playerlocaldata.h"
 #include "simtimer.h"
 #include "soundenvelope.h"
+
 #ifdef HL2_PLAYERANIMSTATE
 #include "hl2_playeranimstate.h"
-#endif
 #include "multiplayer/basenetworkedplayer.h"
+#endif
+
+// In HL2MP we need to inherit from  BaseMultiplayerPlayer!
+#if defined ( HL2MP )
+#include "basemultiplayerplayer.h"
+#endif
 
 class CAI_Squad;
 class CPropCombineBall;
@@ -74,13 +80,28 @@ public:
 	}
 };
 
+
 //=============================================================================
 // >> HL2_PLAYER
 //=============================================================================
-class CHL2_Player : public CBaseNetworkedPlayer
+class CHL2_Player
+#ifdef HL2_PLAYERANIMSTATE
+	: public CBaseNetworkedPlayer
+#elif HL2MP
+	: public CBaseMultiplayerPlayer
+#else
+	: public CBasePlayer
+#endif
 {
 public:
-	DECLARE_CLASS( CHL2_Player, CBaseNetworkedPlayer);
+
+#if defined ( HL2_PLAYERANIMSTATE )
+	DECLARE_CLASS( CHL2_Player, CBaseNetworkedPlayer );
+#elif HL2MP
+	DECLARE_CLASS( CHL2_Player, CBaseMultiplayerPlayer );
+#else
+	DECLARE_CLASS( CHL2_Player, CBasePlayer );
+#endif
 
 	CHL2_Player();
 	~CHL2_Player( void );

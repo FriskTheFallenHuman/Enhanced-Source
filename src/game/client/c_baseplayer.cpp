@@ -197,9 +197,9 @@ END_RECV_TABLE()
 
 		RecvPropEHandle		( RECVINFO( m_hLastWeapon ) ),
 
- 		RecvPropFloat		( RECVINFO(m_vecVelocity[0]), 0, C_BasePlayer::RecvProxy_LocalVelocityX ),
- 		RecvPropFloat		( RECVINFO(m_vecVelocity[1]), 0, C_BasePlayer::RecvProxy_LocalVelocityY ),
- 		RecvPropFloat		( RECVINFO(m_vecVelocity[2]), 0, C_BasePlayer::RecvProxy_LocalVelocityZ ),
+		RecvPropFloat		( RECVINFO(m_vecVelocity[0]), 0, C_BasePlayer::RecvProxy_LocalVelocityX ),
+		RecvPropFloat		( RECVINFO(m_vecVelocity[1]), 0, C_BasePlayer::RecvProxy_LocalVelocityY ),
+		RecvPropFloat		( RECVINFO(m_vecVelocity[2]), 0, C_BasePlayer::RecvProxy_LocalVelocityZ ),
 
 		RecvPropVector		( RECVINFO( m_vecBaseVelocity ) ),
 
@@ -458,7 +458,7 @@ void C_BasePlayer::Spawn( void )
 
 	m_iFOV	= 0;	// init field of view.
 
-    SetModel( "models/player.mdl" );
+	SetModel( "models/player.mdl" );
 
 	Precache();
 
@@ -1720,6 +1720,9 @@ void C_BasePlayer::CalcInEyeCamView(Vector& eyeOrigin, QAngle& eyeAngles, float&
 	else
 	{
 		Vector offset = m_vecViewOffset;
+#ifdef HL2MP
+		offset = target->GetViewOffset();
+#endif
 		eyeOrigin += offset; // hack hack
 	}
 

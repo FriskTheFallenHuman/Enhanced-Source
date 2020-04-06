@@ -1674,7 +1674,9 @@ void CTempEnts::MuzzleFlash( int type, ClientEntityHandle_t hEntity, int attachm
 			MuzzleFlash_Combine_NPC( hEntity, attachmentIndex );
 		}
 		break;
-
+#if defined ( HL2MP )		//  HACK for hl2mp, make the default muzzleflash the smg muzzleflash for weapons like the RPG that are using 'type 0'
+	default:
+#endif // HL2MP
 	case MUZZLEFLASH_SMG1:
 		if ( firstPerson )
 		{
@@ -1723,12 +1725,14 @@ void CTempEnts::MuzzleFlash( int type, ClientEntityHandle_t hEntity, int attachm
 		}
 		break;
 		break;
+#if !defined ( HL2MP )	//  HACK for hl2mp, make the default muzzleflash the smg muzzleflash for weapons like the RPG that are using 'type 0'
 	default:
 		{
 			//NOTENOTE: This means you specified an invalid muzzleflash type, check your spelling?
 			Assert( 0 );
 		}
 		break;
+#endif // HL2MP
 	}
 }
 

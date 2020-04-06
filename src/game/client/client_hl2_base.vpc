@@ -21,12 +21,12 @@ $Project
 {
 	$Folder	"Source Files"
 	{
-		$File	"hud_chat.cpp"
-		$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"
+		$File	"hud_chat.cpp"  [!$HL2MP]
+		$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"  [!$HL2MP]
 		$File	"c_team_objectiveresource.cpp"
 		$File	"c_team_objectiveresource.h"
 
-		$Folder	"Multiplayer"
+		$Folder	"Multiplayer"  [!$HL2MP]
 		{
 			$File	"multiplayer\basenetworkedplayer_cl.h"
 			$File	"multiplayer\basenetworkedplayer_cl.cpp"
@@ -118,7 +118,7 @@ $Project
 			}
 		
 			$File	"$SRCDIR\game\shared\hl2\basehlcombatweapon_shared.cpp"
-			$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"
+			$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"  [!$HL2MP]
 			$File	"hl2\c_hl2_lesson.cpp"
 			$File	"hl2\c_antlion_dust.cpp"
 			$File	"hl2\c_ar2_explosion.cpp"
@@ -161,12 +161,12 @@ $Project
 			$File	"hl2\c_vehicle_prisoner_pod.cpp"
 			$File	"hl2\c_weapon__stubs_hl2.cpp"
 			$File	"hl2\c_weapon_crossbow.cpp"
-			$File	"hl2\c_weapon_physcannon.cpp"
-			$File	"hl2\c_weapon_stunstick.cpp"
+			$File	"hl2\c_weapon_physcannon.cpp"  [!$HL2MP]
+			$File	"hl2\c_weapon_stunstick.cpp"  [!$HL2MP]
 			$File	"$SRCDIR\game\shared\hl2\citadel_effects_shared.h"
-			$File	"hl2\clientmode_hlnormal.cpp"
-			$File	"hl2\clientmode_hlnormal.h"
-			$File	"death.cpp"
+			$File	"hl2\clientmode_hlnormal.cpp"  [!$HL2MP]
+			$File	"hl2\clientmode_hlnormal.h"  [!$HL2MP]
+			$File	"death.cpp"  [!$HL2MP]
 			$File	"$SRCDIR\game\shared\hl2\env_headcrabcanister_shared.cpp"
 			$File	"$SRCDIR\game\shared\hl2\env_headcrabcanister_shared.h"
 			$File	"hl2\fx_antlion.cpp"
@@ -180,8 +180,6 @@ $Project
 			$File	"$SRCDIR\game\shared\hl2\hl2_usermessages.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl_gamemovement.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl_gamemovement.h"
-			$File   "$SRCDIR\game\shared\hl2\hl2_playeranimstate.h"
-            $File   "$SRCDIR\game\shared\hl2\hl2_playeranimstate.cpp"
 			$File	"hl2\hl_in_main.cpp"
 			$File	"hl2\hl_prediction.cpp"
 			$File	"hl2\hud_ammo.cpp"

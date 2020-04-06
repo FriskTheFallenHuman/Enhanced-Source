@@ -29,7 +29,9 @@
 	#include "player_pickup.h"
 	#include "waterbullet.h"
 	#include "func_break.h"
-
+#ifdef HL2MP
+	#include "te_hl2mp_shotgun_shot.h"
+#endif
 	#include "GameStats.h"
 	#include "globalstate.h"
 	#include "world.h"
@@ -1698,6 +1700,9 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 	int			nAmmoFlags	= pAmmoDef->Flags(info.m_iAmmoType);
 	
 	bool bDoServerEffects = true;
+#if defined( HL2MP ) && defined( GAME_DLL )
+	bDoServerEffects = false;
+#endif
 
 #if defined( GAME_DLL )
 	if( IsPlayer() )
@@ -1773,6 +1778,10 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 	{
 		iSeed = CBaseEntity::GetPredictionRandomSeed() & 255;
 	}
+
+#if defined( HL2MP ) && defined( GAME_DLL )
+	int iEffectSeed = iSeed;
+#endif
 
 	//-----------------------------------------------------
 	// Set up our shot manipulator.
@@ -2090,6 +2099,13 @@ void CBaseEntity::FireBullets( const FireBulletsInfo_t &info )
 		iSeed++;
 	}
 
+#if defined( HL2MP ) && defined( GAME_DLL )
+	if ( bDoServerEffects == false )
+	{
+		TE_HL2MPFireBullets( entindex(), tr.startpos, info.m_vecDirShooting, info.m_iAmmoType, iEffectSeed, info.m_iShots, info.m_vecSpread.x, bDoTracers, bDoImpacts );
+	}
+#endif
+
 #ifdef GAME_DLL
 	ApplyMultiDamage();
 
@@ -2138,7 +2154,7 @@ bool CBaseEntity::HandleShotImpactingWater( const FireBulletsInfo_t &info,
 		int	nMaxSplashSize = GetAmmoDef()->MaxSplashSize(info.m_iAmmoType);
 
 		CEffectData	data;
- 		data.m_vOrigin = waterTrace.endpos;
+		data.m_vOrigin = waterTrace.endpos;
 		data.m_vNormal = waterTrace.plane.normal;
 		data.m_flScale = random->RandomFloat( nMinSplashSize, nMaxSplashSize );
 		if ( waterTrace.contents & CONTENTS_SLIME )
@@ -2223,6 +2239,7 @@ void CBaseEntity::DoImpactEffect( trace_t &tr, int nDamageType )
 //-----------------------------------------------------------------------------
 void CBaseEntity::ComputeTracerStartPosition( const Vector &vecShotSrc, Vector *pVecTracerStart )
 {
+#ifndef HL2MP
 	if ( g_pGameRules->IsMultiplayer() )
 	{
 		// NOTE: we do this because in MakeTracer, we force it to use the attachment position
@@ -2230,6 +2247,7 @@ void CBaseEntity::ComputeTracerStartPosition( const Vector &vecShotSrc, Vector *
 		pVecTracerStart->Init( 999, 999, 999 );
 		return;
 	}
+#endif
 	
 	if ( IsPlayer() )
 	{

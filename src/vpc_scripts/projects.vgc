@@ -5,6 +5,7 @@ $Project "client"
 	"game\client\client_portal.vpc"		[$PORTAL]
 	"game\client\client_portal_template.vpc"		[$PORTAL_TEMPLATE]
 	"game\client\client_hl2.vpc"		[$HL2]
+	"game\client\client_hl2mp.vpc"		[$HL2MP]
 	"game\client\client_hl2_template.vpc"		[$HL2_TEMPLATE]
 	"game\client\client_episodic.vpc"		[$HL2_EPISODIC]
 	"game\client\client_vectronic.vpc"		[$VECTRONIC]
@@ -17,16 +18,11 @@ $Project "server"
 	"game\server\server_portal_template.vpc"		[$PORTAL_TEMPLATE]
 	"game\server\server_portal.vpc"		[$PORTAL]
 	"game\server\server_hl2.vpc"		[$HL2]
+	"game\server\server_hl2mp.vpc"		[$HL2MP]
 	"game\server\server_hl2_template.vpc"		[$HL2_TEMPLATE]
 	"game\server\server_episodic.vpc"		[$HL2_EPISODIC]
 	"game\server\server_vectronic.vpc"		[$VECTRONIC]
 }
-
-
-$Project "missionchooser"
-{
-}
-
 
 $Project "shaderlib"
 {

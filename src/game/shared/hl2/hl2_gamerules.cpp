@@ -1420,10 +1420,10 @@ CHalfLife2::~CHalfLife2()
 		return flDamage;
 	}
 
-   	//-----------------------------------------------------------------------------
-  	//-----------------------------------------------------------------------------
- 	bool CHalfLife2::AllowDamage( CBaseEntity *pVictim, const CTakeDamageInfo &info )
-  	{
+	//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
+	bool CHalfLife2::AllowDamage( CBaseEntity *pVictim, const CTakeDamageInfo &info )
+	{
 #ifndef CLIENT_DLL
 	if( (info.GetDamageType() & DMG_CRUSH) && info.GetInflictor() && pVictim->MyNPCPointer() )
 	{
@@ -1449,7 +1449,7 @@ CHalfLife2::~CHalfLife2()
 							if ( pVictim->Classify() == CLASS_ANTLION )
 								return true;
 
-  							return false;
+							return false;
 						}
 					}
 				}
@@ -1457,8 +1457,8 @@ CHalfLife2::~CHalfLife2()
 		}
 	}
 #endif
-  		return true;
-  	}
+		return true;
+	}
 	//-----------------------------------------------------------------------------
 	// Purpose: Whether or not the NPC should drop a health vial
 	// Output : Returns true on success, false on failure.
