@@ -1,0 +1,3 @@
+[submodule "src/devtools/qpc"]
+	path = src/devtools/qpc
+	url = https://github.com/quiverteam/QuiverProjectCreator.git
