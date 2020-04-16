@@ -46,19 +46,6 @@
 //	SNDLVL_140dB	= 140,	// 0.2
 //	SNDLVL_150dB	= 150,	// 0.2
 
-// Fix me in your projects!
-"MenuMusic.Intro"
-{
-	"channel"	"CHAN_ITEM"
-	"volume"	"0.0"
-	//"volume"	"0.4"
-	"soundlevel"  "SNDLVL_NONE"
-	"pitch"	"PITCH_NORM"
-
-	"wave"	"#common\null.wav"
-	//"wave"	"#music\HL2_song7.mp3"
-}
-
 "HUDQuickInfo.LowHealth"
 {
 	"channel"		"CHAN_ITEM"
@@ -142,17 +129,6 @@
 
 	"wave"	"common/wpn_hudoff.wav"
 }
-
-"Hud.Hint"
-{
-	"channel"		"CHAN_STATIC"
-	"soundlevel" 		"SNDLVL_NORM"
-	"pitch"			"PITCH_NORM"
-	"volume"		"0.75"
-
-	"wave"			"#UI/BeepClear.wav"
-}
-
 
 "Instructor.LessonStart"
 {

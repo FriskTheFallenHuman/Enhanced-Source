@@ -306,7 +306,7 @@
 	"Plastic.Base"
 	{
 		"dmg.bullets"		"1.0"
-		"dmg.club"		"1.25"
+		"dmg.club"		"1.0"
 		"dmg.explosive" 	"1.0"
 		"health"		"0"
 	}
@@ -330,14 +330,6 @@
 	"Plastic.Large"
 	{
 		"base"		"Plastic.Base"
-	}
-	// Breakable medium plastic objects
-	"Plastic.break"
-	{
-		"base"		"Plastic.Base"
-		//"physicsmode"	"1"
-		"health"	"1"
-		"damage_table"		"glass"
 	}
 
 
@@ -421,13 +413,6 @@
 	{
 		"base"		"Pottery.Base"
 		"health"	"100"
-	}
-	// Breakable small pottery
-	"Pottery.break"
-	{
-		"base"		"Pottery.Base"
-		"physicsmode"	"3"
-		"health"	"20"
 	}
 
 

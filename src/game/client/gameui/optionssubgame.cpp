@@ -28,9 +28,7 @@ COptionsSubGame::~COptionsSubGame()
 
 void COptionsSubGame::OnClose( void )
 {
-#if defined( BASEPANEL_LEGACY_SOURCE1 )
 	BasePanel()->RunCloseAnimation( "CloseOptionsSubGame" );
-#endif
 	BaseClass::OnClose();
 }
 

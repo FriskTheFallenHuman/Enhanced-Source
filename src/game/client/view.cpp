@@ -46,12 +46,7 @@
 #endif
 
 #ifdef GAMEUI_EMBEDDED
-#if !defined( INFESTED_DLL )
-#include "gameui/basemodpanel.h"
-#else
-#include "swarm/gameui/swarm/basemodpanel.h"
-#include "c_asw_marine.h"
-#endif
+#include "basepanel.h"
 #endif
 
 #if defined( HL2_CLIENT_DLL ) || defined( INFESTED_DLL )

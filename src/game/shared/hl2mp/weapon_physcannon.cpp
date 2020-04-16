@@ -76,6 +76,8 @@ extern ConVar hl2_walkspeed;
 #define PHYSCANNON_CENTER_GLOW "sprites/orangecore1"
 #define PHYSCANNON_BLAST_SPRITE "sprites/orangecore2"
 
+#pragma warning(disable:4800)
+
 #ifndef CLIENT_DLL
 
 void PhysCannonBeginUpgrade( CBaseAnimating *pAnim )

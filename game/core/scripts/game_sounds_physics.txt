@@ -32,10 +32,9 @@
 	}
 }
 
-
 "Default.BulletImpact"
 {
-	"soundlevel"		"SNDLVL_NORM"
+	"soundlevel"		"SNDLVL_75dB"
 	"pitch"			"PITCH_NORM"
 	"volume"			"0.7"
 	"rndwave"
@@ -634,8 +633,8 @@
 	"pitch"			"PITCH_NORM"
 	"rndwave"
 	{
-		"wave"		"player/footsteps/glass2.wav"
-		"wave"		"player/footsteps/glass4.wav"
+		"wave"		"physics/glass/glass_sheet_step1.wav"
+		"wave"		"physics/glass/glass_sheet_step2.wav"
 	}
 }
 
@@ -646,8 +645,8 @@
 	"pitch"			"PITCH_NORM"
 	"rndwave"
 	{
-		"wave"		"player/footsteps/glass1.wav"
-		"wave"		"player/footsteps/glass3.wav"
+		"wave"		"physics/glass/glass_sheet_step3.wav"
+		"wave"		"physics/glass/glass_sheet_step4.wav"
 	}
 }
 
@@ -1230,19 +1229,16 @@
 
 "Flesh.BulletImpact"
 {
-	"channel"		"CHAN_AUTO"
-	"soundlevel"		"SNDLVL_NORM"
-	"volume"		"0.35"
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"0.7"
+	"pitch"			"PITCH_NORM"
 	"rndwave"
 	{
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_01.wav"
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_02.wav"
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_03.wav"
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_04.wav"
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_05.wav"
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_06.wav"
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_07.wav"
-		"wave"		"physics/flesh/phys_bullet_impact_flesh_08.wav"
+		"wave"	"physics/flesh/flesh_impact_bullet1.wav"
+		"wave"	"physics/flesh/flesh_impact_bullet2.wav"
+		"wave"	"physics/flesh/flesh_impact_bullet3.wav"
+		"wave"	"physics/flesh/flesh_impact_bullet4.wav"
+		"wave"	"physics/flesh/flesh_impact_bullet5.wav"
 	}
 }
 

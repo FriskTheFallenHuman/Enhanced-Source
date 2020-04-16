@@ -110,6 +110,8 @@
 #include "missionchooser/iasw_mission_chooser_source.h"
 #include "matchmaking/swarm/imatchext_swarm.h"
 #include "asw_gamerules.h"
+#else
+#include "matchmaking/swarm/imatchext_swarm.h"
 #endif
 
 #ifdef DEFERRED
@@ -194,6 +196,8 @@ IBlackBox *blackboxrecorder = NULL;
 #ifdef INFESTED_DLL
 IASW_Mission_Chooser *missionchooser = NULL;
 IMatchExtSwarm *g_pMatchExtSwarm = NULL;
+#else
+IMatchExtSwarm *g_pMatchExtSwarm = NULL;
 #endif
 
 IGameSystem *SoundEmitterSystem();
@@ -248,8 +252,6 @@ INetworkStringTable *g_pStringTableMaterials = NULL;
 INetworkStringTable *g_pStringTableInfoPanel = NULL;
 INetworkStringTable *g_pStringTableClientSideChoreoScenes = NULL;
 INetworkStringTable *g_pStringTableExtraParticleFiles = NULL;
-INetworkStringTable *g_pStringTableCustomWeapons = NULL;
-INetworkStringTable *g_pStringTableCustomWeaponsFactory = NULL;
 
 CStringTableSaveRestoreOps g_VguiScreenStringOps;
 
@@ -726,6 +728,9 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 #ifdef INFESTED_DLL
 	if ( (missionchooser = (IASW_Mission_Chooser *)appSystemFactory(ASW_MISSION_CHOOSER_VERSION, NULL)) == NULL )
 		return false;
+	if ( (g_pMatchExtSwarm = (IMatchExtSwarm *)appSystemFactory(IMATCHEXT_SWARM_INTERFACE, NULL)) == NULL )
+		return false;
+#else
 	if ( (g_pMatchExtSwarm = (IMatchExtSwarm *)appSystemFactory(IMATCHEXT_SWARM_INTERFACE, NULL)) == NULL )
 		return false;
 #endif
@@ -1497,9 +1502,6 @@ void CServerGameDLL::CreateNetworkStringTables( void )
 	g_pStringTableMaterials = networkstringtable->CreateStringTable( "Materials", MAX_MATERIAL_STRINGS, 0, 0, NSF_DICTIONARY_ENABLED );
 	g_pStringTableInfoPanel = networkstringtable->CreateStringTable( "InfoPanel", MAX_INFOPANEL_STRINGS );
 	g_pStringTableClientSideChoreoScenes = networkstringtable->CreateStringTable( "Scenes", MAX_CHOREO_SCENES_STRINGS, 0, 0, NSF_DICTIONARY_ENABLED );
-
-	g_pStringTableCustomWeapons = networkstringtable->CreateStringTable( "CustomWeaponsAliases", 128 );
-	g_pStringTableCustomWeaponsFactory = networkstringtable->CreateStringTable( "CustomWeaponsFactory", 1024 );
 
 #ifdef DEFERRED
 	// @Deferred - Biohazard

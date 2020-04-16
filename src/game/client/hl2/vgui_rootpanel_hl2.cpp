@@ -25,22 +25,22 @@ typedef unsigned int EFFECT_HANDLE;
 // Purpose: Sits between engine and client .dll panels
 //  Responsible for drawing screen overlays
 //-----------------------------------------------------------------------------
-class C_SDKRootPanel : public vgui::Panel
+class C_HL2RootPanel : public vgui::Panel
 {
 	typedef vgui::Panel BaseClass;
 public:
-	C_SDKRootPanel( vgui::VPANEL parent, int slot );
-	virtual				~C_SDKRootPanel( void );
+			C_HL2RootPanel( vgui::VPANEL parent, int slot );
+	virtual	~C_HL2RootPanel( void ) {}
 
 	// Draw Panel effects here
 	virtual void		PostChildPaint();
 
 	// Clear list of Panel Effects
-	virtual void		LevelInit( void );
-	virtual void		LevelShutdown( void );
+	virtual void		LevelInit( void ) {}
+	virtual void		LevelShutdown( void ) {}
 
 	// Run effects and let them decide whether to remove themselves
-	void				OnTick( void );
+	void				OnTick( void ) {}
 
 	virtual void		PaintTraverse( bool Repaint, bool allowForce = true );
 
@@ -48,7 +48,7 @@ public:
 private:
 
 	// Render all panel effects
-	void		RenderPanelEffects( void );
+	void		RenderPanelEffects( void ) {}
 
 	// List of current panel effects
 	CUtlVector< CPanelEffect *> m_Effects;
@@ -56,10 +56,9 @@ private:
 };
 
 //-----------------------------------------------------------------------------
-// C_SDKRootPanel implementation.
+// C_HL2RootPanel implementation.
 //-----------------------------------------------------------------------------
-C_SDKRootPanel::C_SDKRootPanel( vgui::VPANEL parent, int slot )
-	: BaseClass( NULL, "SDK Root Panel" ), m_nSplitSlot( slot )
+C_HL2RootPanel::C_HL2RootPanel( vgui::VPANEL parent, int slot ) : BaseClass( NULL, "HL2 Root Panel" ), m_nSplitSlot( slot )
 {
 	SetParent( parent );
 	SetPaintEnabled( false );
@@ -79,14 +78,7 @@ C_SDKRootPanel::C_SDKRootPanel( vgui::VPANEL parent, int slot )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-C_SDKRootPanel::~C_SDKRootPanel( void )
-{
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
-void C_SDKRootPanel::PostChildPaint()
+void C_HL2RootPanel::PostChildPaint()
 {
 	BaseClass::PostChildPaint();
 
@@ -94,46 +86,20 @@ void C_SDKRootPanel::PostChildPaint()
 	RenderPanelEffects();
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: For each panel effect, check if it wants to draw and draw it on
-//  this panel/surface if so
-//-----------------------------------------------------------------------------
-void C_SDKRootPanel::RenderPanelEffects( void )
-{
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
-void C_SDKRootPanel::OnTick( void )
-{
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Reset effects on level load/shutdown
-//-----------------------------------------------------------------------------
-void C_SDKRootPanel::LevelInit( void )
-{
-}
-
-void C_SDKRootPanel::LevelShutdown( void )
-{
-}
-
-void C_SDKRootPanel::PaintTraverse( bool Repaint, bool allowForce /*= true*/ )
+void C_HL2RootPanel::PaintTraverse( bool Repaint, bool allowForce /*= true*/ )
 {
 	ACTIVE_SPLITSCREEN_PLAYER_GUARD( m_nSplitSlot);
 	BaseClass::PaintTraverse( Repaint, allowForce );
 }
 
-void C_SDKRootPanel::OnThink()
+void C_HL2RootPanel::OnThink()
 {
 	ACTIVE_SPLITSCREEN_PLAYER_GUARD( m_nSplitSlot );
 	BaseClass::OnThink();
 }
 
-static C_SDKRootPanel *g_pRootPanel[ MAX_SPLITSCREEN_PLAYERS ];
-static C_SDKRootPanel *g_pFullscreenRootPanel;
+static C_HL2RootPanel *g_pRootPanel[ MAX_SPLITSCREEN_PLAYERS ];
+static C_HL2RootPanel *g_pFullscreenRootPanel;
 
 void VGui_GetPanelList( CUtlVector< Panel * > &list )
 {
@@ -150,10 +116,10 @@ void VGUI_CreateClientDLLRootPanel( void )
 {
 	for ( int i = 0 ; i < MAX_SPLITSCREEN_PLAYERS; ++i )
 	{
-		g_pRootPanel[ i ] = new C_SDKRootPanel( enginevgui->GetPanel( PANEL_CLIENTDLL ), i );
+		g_pRootPanel[ i ] = new C_HL2RootPanel( enginevgui->GetPanel( PANEL_CLIENTDLL ), i );
 	}
 
-	g_pFullscreenRootPanel = new C_SDKRootPanel( enginevgui->GetPanel( PANEL_CLIENTDLL ), 0 );
+	g_pFullscreenRootPanel = new C_HL2RootPanel( enginevgui->GetPanel( PANEL_CLIENTDLL ), 0 );
 	g_pFullscreenRootPanel->SetZPos( 1 );
 }
 
@@ -182,8 +148,6 @@ vgui::VPANEL VGui_GetClientDLLRootPanel( void )
 	return g_pRootPanel[ GET_ACTIVE_SPLITSCREEN_SLOT() ]->GetVPanel();
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Purpose: Fullscreen root panel for shared hud elements during splitscreen
 // Output : vgui::Panel
@@ -197,43 +161,3 @@ vgui::VPANEL VGui_GetFullscreenRootVPANEL( void )
 {
 	return g_pFullscreenRootPanel->GetVPanel();
 }
-
-/*
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
-void VGUI_CreateClientDLLRootPanel( void )
-{
-	// Just using PANEL_ROOT in HL2 right now
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
-void VGUI_DestroyClientDLLRootPanel( void )
-{
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Game specific root panel
-// Output : vgui::Panel
-//-----------------------------------------------------------------------------
-vgui::VPANEL VGui_GetClientDLLRootPanel( void )
-{
-	vgui::VPANEL root = enginevgui->GetPanel( PANEL_CLIENTDLL );
-	return root;
-}
-//-----------------------------------------------------------------------------
-// Purpose: Fullscreen root panel for shared hud elements during splitscreen
-// Output : vgui::Panel
-//-----------------------------------------------------------------------------
-vgui::Panel *VGui_GetFullscreenRootPanel( void )
-{
-	return g_pFullscreenRootPanel;
-}
-
-vgui::VPANEL VGui_GetFullscreenRootVPANEL( void )
-{
-	return g_pFullscreenRootPanel->GetVPanel();
-}
-*/

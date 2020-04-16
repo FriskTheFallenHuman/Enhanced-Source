@@ -618,10 +618,10 @@
 {
 	"density"	"900"
 
-	"stepleft"	"Default.StepLeft"
-	"stepright"	"Default.StepRight"
+	"stepleft"	"Flesh.StepLeft"
+	"stepright"	"Flesh.StepRight"
 	"bulletimpact"	"Flesh.BulletImpact"
-	"impacthard"	"Flesh_Bloody.ImpactHard"
+	"impacthard"	"Flesh.ImpactHard"
 	"impactsoft"	"Flesh.ImpactSoft"
 	"scraperough"	"Flesh.ScrapeRough"
 	"scrapesmooth"	"Flesh.ScrapeSmooth"
@@ -629,8 +629,8 @@
 //	"strain"		"Flesh.Strain"
 	"break"			"Flesh.Break"
 
-	"audiohardnessfactor" "0.1"
-	"audioHardMinVelocity" "10000"
+	"audiohardnessfactor" "0.25"
+	"audioHardMinVelocity" "500"
 	"audioroughnessfactor" "0.1"
 
 	"gamematerial"	"F"
@@ -684,19 +684,15 @@
 {
 	"base"		"dirt"
 	"density"	"800"
-// asw no sliding, feels horrible
-//	"friction"	"0.35"
+	"friction"	"0.35"
 
 	"audiohardnessfactor" "0.25"
-	
-	"gamematerial"	"K"
 }
 
 "ice"
 {
 	"density"	"917"
-// asw no sliding, feels horrible
-//	"friction"	"0.1"
+	"friction"	"0.1"
 	"elasticity"	"0.1"
 
 	"audioroughnessfactor" "0.1"

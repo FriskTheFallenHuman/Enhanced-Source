@@ -108,11 +108,7 @@
 #endif
 
 #ifdef GAMEUI_EMBEDDED
-	#if !defined( INFESTED_DLL )
-	#include "gameui/basemodpanel.h"
-	#else
-	#include "swarm/gameui/swarm/basemodpanel.h"
-	#endif
+	#include "basepanel.h"
 #endif
 
 #ifdef DEMOPOLISH_ENABLED
@@ -242,8 +238,6 @@ INetworkStringTable *g_StringTableVguiScreen = NULL;
 INetworkStringTable *g_pStringTableMaterials = NULL;
 INetworkStringTable *g_pStringTableInfoPanel = NULL;
 INetworkStringTable *g_pStringTableClientSideChoreoScenes = NULL;
-INetworkStringTable *g_pStringTableCustomWeapons = NULL;
-INetworkStringTable *g_pStringTableCustomWeaponsFactory = NULL;
 
 static CGlobalVarsBase dummyvars( true );
 // So stuff that might reference gpGlobals during DLL initialization won't have a NULL pointer.
@@ -1771,16 +1765,7 @@ void ConfigureCurrentSystemLevel()
 		nGPUMemLevel = 360;
 	}
 
-#if defined( SWARM_DLL )
 	char szModName[32] = "swarm";
-#elif defined ( HL2_EPISODIC )
-	char szModName[32] = "ep2";
-#elif defined ( HL2 )
-	char szModName[32] = "hl2";
-#elif defined ( SDK_CLIENT_DLL )
-	char szModName[32] = "sdk";
-#endif
-
 	UpdateSystemLevel( nCPULevel, nGPULevel, nMemLevel, nGPUMemLevel, VGui_IsSplitScreen(), szModName );
 
 	if ( engine )
@@ -2128,11 +2113,6 @@ void OnSceneStringTableChanged( void *object, INetworkStringTable *stringTable, 
 {
 }
 
-#ifdef SMMOD
-void OnCustomWeaponsTableChanged( void *object, INetworkStringTable *stringTable, int stringNumber, const char *newString, void const *newData );
-void OnCustomWeaponsFactoryTableChanged( void *object, INetworkStringTable *stringTable, int stringNumber, const char *newString, void const *newData );
-#endif
-
 //-----------------------------------------------------------------------------
 // Purpose: Hook up any callbacks here, the table definition has been parsed but 
 //  no data has been added yet
@@ -2187,27 +2167,13 @@ void CHLClient::InstallStringTableCallback( const char *tableName )
 		// When the particle system list changes, we need to know immediately
 		g_pStringTableExtraParticleFiles->SetStringChangedCallback( NULL, OnPrecacheParticleFile );
 	}
-#ifdef SMMOD
-	else if ( !Q_strcasecmp( tableName, "CustomWeaponsAliases" ) )
-	{
-		g_pStringTableCustomWeapons = networkstringtable->FindTable( tableName );
-		networkstringtable->SetAllowClientSideAddString( g_pStringTableCustomWeapons, false );
-		g_pStringTableCustomWeapons->SetStringChangedCallback( NULL, OnCustomWeaponsTableChanged );
-	}
-	else if ( !Q_strcasecmp( tableName, "CustomWeaponsFactory" ) )
-	{
-		g_pStringTableCustomWeaponsFactory = networkstringtable->FindTable( tableName );
-		networkstringtable->SetAllowClientSideAddString( g_pStringTableCustomWeaponsFactory, false );
-		g_pStringTableCustomWeaponsFactory->SetStringChangedCallback( NULL, OnCustomWeaponsFactoryTableChanged );
-	}
-#endif
 #ifdef DEFERRED
 	// @Deferred - Biohazard
-	else if (!Q_strcasecmp(tableName, COOKIE_STRINGTBL_NAME))
+	else if ( !Q_strcasecmp( tableName, COOKIE_STRINGTBL_NAME ) )
 	{
-		g_pStringTable_LightCookies = networkstringtable->FindTable(tableName);
+		g_pStringTable_LightCookies = networkstringtable->FindTable( tableName );
 
-		g_pStringTable_LightCookies->SetStringChangedCallback(NULL, OnCookieTableChanged);
+		g_pStringTable_LightCookies->SetStringChangedCallback( NULL, OnCookieTableChanged );
 	}
 #endif
 	else

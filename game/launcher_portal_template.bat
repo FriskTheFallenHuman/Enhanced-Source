@@ -1,1 +1,1 @@
-@start swarm.exe -game portal_template
+@start swarm.exe -override_vpk -sw -w 1280 -h 720 -dev -console -allowdebug -condebug -conclear -allowdebug -game portal_template

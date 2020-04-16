@@ -51,63 +51,12 @@
 
 "Error"
 {
-	"channel"		"CHAN_STATIC"
-	"soundlevel"		"SNDLVL_NONE"
-	"wave"		"error.wav"
-}
-
-
-"General.BurningFlesh"
-{
-	"channel"		"CHAN_WEAPON"
-	"volume"		"0.45"
+	"channel"	"CHAN_STATIC"
+	"volume"	"VOL_NORM"
 	"pitch"		"PITCH_NORM"
+	"soundlevel"	"SNDLVL_NONE"
 
-	"soundlevel"	"SNDLVL_NORM"
-
-	"wave"		 "npc/headcrab/headcrab_burning_loop2.wav" 
-}
-
-"General.BurningObject"
-{
-	"channel"		"CHAN_WEAPON"
-	"volume"		"VOL_NORM"
-	"pitch"		"PITCH_NORM"
-
-	"soundlevel"	"SNDLVL_NORM"
-
-	"wave"		 "ambient/fire/fire_small_loop2.wav" 
-}
-
-"General.StopBurning"
-{
-	"channel"		"CHAN_WEAPON"
-	"volume"		"VOL_NORM"
-	"pitch"		"PITCH_NORM"
-
-	"soundlevel"	"SNDLVL_NORM"
-
-	"wave"		 "common/null.wav" 
-}
-
-
-"Hud.Hint"
-{
-	"channel"		"CHAN_STATIC"
-	"soundlevel" 		"SNDLVL_NORM"
-	"pitch"			"PITCH_NORM"
-	"volume"		"0.75"
-
-	"wave"			"#UI/BeepClear.wav"
-}
-
-"SprayCan.Paint"
-{
-	"channel"	"CHAN_VOICE"
-	"volume"	"1"
-	"soundlevel"  "SNDLVL_75dB"
-
-	"wave"	"player/sprayer.wav"
+	"wave"		 "error.wav" 
 }
 
 "AI_BaseNPC.BodyDrop_Heavy"
@@ -217,162 +166,51 @@
 	"wave"	"items/suitchargeok1.wav"
 }
 
-"Bullets.DefaultNearmiss"
-{
-	"channel"		"CHAN_STATIC"
-	"volume"		"0.7"
-	"soundlevel"	"SNDLVL_140dB"
-	"pitch"			"PITCH_NORM"
 
-	"rndwave"
-	{
-		"wave"	">weapons/fx/nearmiss/bulletLtoR03.wav"
-		"wave"	">weapons/fx/nearmiss/bulletLtoR04.wav"
-		
-		"wave"	">weapons/fx/nearmiss/bulletLtoR06.wav"
-		"wave"	">weapons/fx/nearmiss/bulletLtoR07.wav"
-		"wave"	">weapons/fx/nearmiss/bulletLtoR09.wav"
-		"wave"	">weapons/fx/nearmiss/bulletLtoR10.wav"
-
-		"wave"	">weapons/fx/nearmiss/bulletLtoR13.wav"
-		"wave"	">weapons/fx/nearmiss/bulletLtoR14.wav"
-	}
-}
-
-"FX_RicochetSound.Ricochet"
-{
-	"channel"		"CHAN_STATIC"
-	"soundlevel"		"SNDLVL_TALKING"
-	"volume"		"0.50,0.60"
-	"pitch"		"90,110"
-	"rndwave"
-	{
-		"wave"		"weapons/fx/rics/ric1.wav"
-		"wave"		"weapons/fx/rics/ric2.wav"
-		"wave"		"weapons/fx/rics/ric3.wav"
-		"wave"		"weapons/fx/rics/ric4.wav"
-		"wave"		"weapons/fx/rics/ric5.wav"
-	}
-}
-
-"BaseExplosionEffect.Sound"
-{
-	"channel"		"CHAN_STATIC"
-	"soundlevel"		"SNDLVL_GUNFIRE"
-	"rndwave"
-	{
-		"wave"		"ambient/explosions/explo_generic_med_01.wav"
-		"wave"		"ambient/explosions/explo_generic_med_02.wav"
-		"wave"		"ambient/explosions/explo_generic_med_03.wav"
-		"wave"		"ambient/explosions/explo_generic_med_04.wav"
-		"wave"		"ambient/explosions/explo_generic_med_05.wav"
-		"wave"		"ambient/explosions/explo_generic_med_06.wav"
-	}
-}
-
-"Splash.SplashSound"
-{
-	"channel"		"CHAN_AUTO"
-	"soundlevel"		"SNDLVL_NORM"
-	"volume"		"0.75"
-	"pitch"		"90,100"
-	"rndwave"
-	{
-		"wave"		"ambient/water/water_spray1.wav"
-		"wave"		"ambient/water/water_spray2.wav"
-		"wave"		"ambient/water/water_spray3.wav"
-	}
-}
-
-"PropaneTank.Burst"
+"General.BurningFlesh"
 {
 	"channel"		"CHAN_WEAPON"
-	"soundlevel"		"SNDLVL_90dB"
-	"pitch"		"95,105"
-	"wave"		"ambient/fire/gascan_ignite1.wav"
+	"volume"		"0.45"
+	"pitch"		"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_NORM"
+
+	"wave"		 "npc/headcrab/headcrab_burning_loop2.wav" 
 }
 
-
-"Spark.Small"
+"General.BurningObject"
 {
-	"channel"		"CHAN_VOICE"
-	"soundlevel"		"SNDLVL_NORM"
-	"volume"		"0.20,0.30"
-	"pitch"		"100,120"
-	"rndwave"
-	{
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_03.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_04.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_06.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_07.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_08.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_10.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_11.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_12.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_13.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_15.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_16.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_17.wav"
-	}
+	"channel"		"CHAN_WEAPON"
+	"volume"		"VOL_NORM"
+	"pitch"		"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_NORM"
+
+	"wave"		 "ambient/fire/fire_small_loop2.wav" 
 }
 
-"Spark.Medium"
+"General.StopBurning"
 {
-	"channel"		"CHAN_VOICE"
-	"soundlevel"		"SNDLVL_NORM"
-	"volume"		"0.20,0.30"
-	"pitch"		"100,120"
-	"rndwave"
-	{
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_03.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_04.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_06.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_07.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_08.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_10.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_11.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_12.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_13.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_15.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_16.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_medium_intensity\sparks_quick_medium_intensity_17.wav"
-	}
+	"channel"		"CHAN_WEAPON"
+	"volume"		"VOL_NORM"
+	"pitch"		"PITCH_NORM"
+
+	"soundlevel"	"SNDLVL_NORM"
+
+	"wave"		 "common/null.wav" 
 }
 
-"Spark.High"
+"Hud.Hint"
 {
-	"channel"		"CHAN_VOICE"
-	"soundlevel"		"SNDLVL_NORM"
-	"volume"		"0.20,0.30"
-	"pitch"		"100,120"
-	"rndwave"
-	{
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_01.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_02.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_03.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_04.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_05.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_06.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_07.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_08.wav"
-	}
+	"channel"	"CHAN_STATIC"
+	"volume"	"VOL_NORM"
+	"soundlevel"  	"SNDLVL_NONE"
+	"pitch"		"PITCH_NORM"
+
+	"wave"		"ui/hint.wav"
 }
 
-"Spark.Large"
-{
-	"channel"		"CHAN_VOICE"
-	"soundlevel"		"SNDLVL_95"
-	"volume"		"0.35,0.6"
-	"pitch"		"95,105"
-	"rndwave"
-	{
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_01.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_02.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_03.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_04.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_05.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_06.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_07.wav"
-		"wave"		")vfx\sparks_quick\sparks_quick_high_intensity\sparks_quick_high_intensity_08.wav"
-	}
-}
+
+
+
+

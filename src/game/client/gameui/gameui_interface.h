@@ -11,12 +11,10 @@
 
 #include "GameUI/IGameUI.h"
 
-#include "vgui_controls/Panel.h"
-#include "vgui_controls/PHandle.h"
-#include "convar.h"
+#include <vgui_controls/Panel.h>
+#include <vgui_controls/PHandle.h>
 
 class IGameClientExports;
-class CCommand;
 
 //-----------------------------------------------------------------------------
 // Purpose: Implementation of GameUI's exposed interface 
@@ -47,6 +45,16 @@ public:
 
 	virtual void SetLoadingBackgroundDialog( vgui::VPANEL panel );
 
+	// Bonus maps interfaces
+	virtual void BonusMapUnlock( const char *pchFileName = NULL, const char *pchMapName = NULL );
+	virtual void BonusMapComplete( const char *pchFileName = NULL, const char *pchMapName = NULL );
+	virtual void BonusMapChallengeUpdate( const char *pchFileName, const char *pchMapName, const char *pchChallengeName, int iBest );
+	virtual void BonusMapChallengeNames( char *pchFileName, char *pchMapName, char *pchChallengeName );
+	virtual void BonusMapChallengeObjectives( int &iBronze, int &iSilver, int &iGold );
+	virtual void BonusMapDatabaseSave( void );
+	virtual int BonusMapNumAdvancedCompleted( void );
+	virtual void BonusMapNumMedals( int piNumMedals[ 3 ] );
+
 	// notifications
 	virtual void OnGameUIActivated();
 	virtual void OnGameUIHidden();
@@ -54,6 +62,7 @@ public:
 	virtual void OnConnectToServer2( const char *game, int IP, int connectionPort, int queryPort );
 	virtual void OnDisconnectFromServer( uint8 eSteamLoginFailure );
 	virtual void OnLevelLoadingStarted( const char *levelName, bool bShowProgressDialog );
+	virtual void OnLevelLoadingStarted( bool bShowProgressDialog );
 	virtual void OnLevelLoadingFinished( bool bError, const char *failureReason, const char *extendedReason );
 	virtual void OnDisconnectFromServer_OLD( uint8 eSteamLoginFailure, const char *username ) { OnDisconnectFromServer( eSteamLoginFailure ); }
 
@@ -62,28 +71,44 @@ public:
 	// Shows progress desc, returns previous setting... (used with custom progress bars )
 	virtual bool SetShowProgressText( bool show );
 
+	// !!!!!!!!!members added after "GameUI011" initial release!!!!!!!!!!!!!!!!!!!
 	// Allows the level loading progress to show map-specific info
-	virtual void SetProgressLevelName( const char *levelName );
+	virtual void SetProgressLevelName( const char *levelName ) {}
 
- 	virtual void NeedConnectionProblemWaitScreen();
+	// brings up a login prompt
+	virtual void RefreshSteamLogin() {}
+	// brings up the new game dialog
+	virtual void ShowNewGameDialog( int chapter );
 
-	virtual void ShowPasswordUI( char const *pchCurrentPW );
+	// Xbox 360
+	virtual void SessionNotification( const int notification, const int param = 0 );
+	virtual void SystemNotification( const int notification );
+	virtual void ShowMessageDialog( const uint nType, vgui::Panel *pOwner = NULL );
+	virtual void CloseMessageDialog( const uint nType = 0 );
+	virtual void UpdatePlayerInfo( uint64 nPlayerId, const char *pName, int nTeam, byte cVoiceState, int nPlayersNeeded, bool bHost );
+	virtual void SessionSearchResult( int searchIdx, void *pHostData, XSESSION_SEARCHRESULT *pResult, int ping );
+	virtual void OnCreditsFinished( void );
 
- 	virtual void SetProgressOnStart();
- 
-#if defined( _X360 ) && defined( _DEMO )
-	virtual void OnDemoTimeout();
-#endif
+	// X360 Storage device validation:
+	//		returns true right away if storage device has been previously selected.
+	//		otherwise returns false and will set the variable pointed by pStorageDeviceValidated to 1
+	//				  once the storage device is selected by user.
+	virtual bool ValidateStorageDevice( int *pStorageDeviceValidated );
 
- 	// state
- 	bool IsInLevel();
- 	bool IsInBackgroundLevel();
- 	bool IsInMultiplayer();
- 	bool IsConsoleUI();
- 	bool HasSavedThisMenuSession();
- 	void SetSavedThisMenuSession( bool bState );
- 
- 	void ShowLoadingBackgroundDialog();
+	virtual void SetProgressOnStart();
+
+	virtual void NeedConnectionProblemWaitScreen() {}
+	virtual void ShowPasswordUI( char const *pchCurrentPW ) {}
+
+	// state
+	bool IsInLevel();
+	bool IsInBackgroundLevel();
+	bool IsInMultiplayer();
+	bool IsConsoleUI();
+	bool HasSavedThisMenuSession();
+	void SetSavedThisMenuSession( bool bState );
+
+	void ShowLoadingBackgroundDialog();
 	void HideLoadingBackgroundDialog();
 	bool HasLoadingBackgroundDialog();
 
@@ -101,10 +126,11 @@ private:
 
 	bool FindPlatformDirectory(char *platformDir, int bufferSize);
 	void GetUpdateVersion( char *pszProd, char *pszVer);
-	void ValidateCDKey();
+	void ValidateCDKey() {}
 
 	CreateInterfaceFn m_GameFactory;
 
+	bool m_bPlayGameStartupSound : 1;
 	bool m_bTryingToLoadFriends : 1;
 	bool m_bActivatedUI : 1;
 	bool m_bIsConsoleUI : 1;
@@ -116,7 +142,6 @@ private:
 	int m_iGameQueryPort;
 	
 	int m_iFriendsLoadPauseFrames;
-	int m_iPlayGameStartupSound;
 
 	char m_szPreviousStatusText[128];
 	char m_szPlatformDir[MAX_PATH];
@@ -129,5 +154,6 @@ extern CGameUI &GameUI();
 
 // expose client interface
 extern IGameClientExports *GameClientExports();
+
 
 #endif // GAMEUI_INTERFACE_H

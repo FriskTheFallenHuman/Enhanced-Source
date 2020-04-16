@@ -160,14 +160,12 @@ void CLoadingDialog::SetupControlSettings( bool bForceShowProgressText )
 {
 	m_bShowingVACInfo = false;
 
-#if defined( BASEPANEL_LEGACY_SOURCE1 )
 	if ( GameUI().IsConsoleUI() )
 	{
 		KeyValues *pControlSettings = BasePanel()->GetConsoleControlSettings()->FindKey( "LoadingDialogNoBanner.res" );
 		LoadControlSettings( "null", NULL, pControlSettings );
 		return;
 	}
-#endif
 
 	if ( ModInfo().IsSinglePlayerOnly() && !bForceShowProgressText )
 	{
@@ -597,6 +595,13 @@ void CLoadingDialog::OnCommand(const char *command)
 	{
 		// disconnect from the server
 		engine->ClientCmd_Unrestricted("disconnect\n");
+
+		// close
+		Close();
+	}
+	else if (!stricmp(command, "Login"))
+	{
+		GameUI().RefreshSteamLogin();
 
 		// close
 		Close();

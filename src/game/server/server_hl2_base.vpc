@@ -10,8 +10,10 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories	"$BASE;$SRCDIR\game\shared\hl2;.\hl2"
+		$AdditionalIncludeDirectories	"$BASE;.\hl2;$SRCDIR\game\shared\hl2"
+		$AdditionalIncludeDirectories	"$BASE;.\episodic;$SRCDIR\game\shared\episodic"	[$USE_EPISODIC]		
 		$PreprocessorDefinitions		"$BASE;SWARM_DLL;HL2_DLL;USES_SAVERESTORE"
+		$PreprocessorDefinitions		"$BASE;HL2_EPISODIC"	[$USE_EPISODIC]
 	}
 }
 
@@ -22,7 +24,7 @@ $Project
 		$File	"ai_eventresponse.cpp"
 		$File	"ai_eventresponse.h"
 		$File	"ai_relationship.cpp"
-		$File	"base_gameinterface.cpp"  [!$HL2MP]
+		$File	"base_gameinterface.cpp"
 		$File	"basegrenade_concussion.cpp"
 		$File	"basegrenade_contact.cpp"
 		$File	"basegrenade_timed.cpp"
@@ -43,28 +45,34 @@ $Project
 		$File	"$SRCDIR\game\shared\touchlink.h"
 		$File	"vehicle_choreo_generic.cpp"
 		$File	"$SRCDIR\game\shared\vehicle_choreo_generic_shared.h"
-		$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"   [!$HL2MP]
-
-		$Folder	"Multiplayer"  [!$HL2MP]
-		{
-			$File	"multiplayer\basenetworkedplayer.h"
-			$File	"multiplayer\basenetworkedplayer.cpp"
-			$File	"multiplayer\basenetworkedragdoll.h"
-			$File	"multiplayer\basenetworkedragdoll.cpp"
-			
-			$File	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
-			$File	"$SRCDIR\game\shared\multiplayer\basenetworkedplayer_gamemove.h"
-			$File	"$SRCDIR\game\shared\multiplayer\basenetworkedplayer_gamemove.cpp"
-			$File	"$SRCDIR\game\shared\multiplayer\basenetworkedplayer_shared.h"
-			$File	"$SRCDIR\game\shared\multiplayer\basenetworkedplayer_shared.cpp"
-			$File	"$SRCDIR\game\shared\multiplayer\multiplayer_animstate.h"
-			$File	"$SRCDIR\game\shared\multiplayer\multiplayer_animstate.cpp"
-		}
+		$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"
 		
 		$Folder	"HL2 DLL"
 		{
-			$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"  [!$HL2MP]
-			$File	"$SRCDIR\game\shared\achievements_hlx.cpp"  [!$HL2MP]
+			$Folder "Episodic"	[$USE_EPISODIC]
+			{
+				$File	"episodic/ai_behavior_alyx_injured.cpp"
+				$File	"episodic/ai_behavior_passenger_companion.cpp"
+				$File	"episodic/ai_behavior_passenger_zombie.cpp"
+				$File	"episodic/grenade_hopwire.cpp"
+				$File	"episodic/npc_advisor.cpp"
+				$File	"episodic/npc_combine_cannon.cpp"
+				$File	"episodic/npc_hunter.cpp"
+				$File	"episodic/npc_magnusson.cpp"
+				$File	"episodic/npc_puppet.cpp"
+				$File	"episodic/prop_scalable.cpp"
+				$File	"episodic/vehicle_jeep_episodic.cpp"
+				$File	"episodic/weapon_hopwire.cpp"
+				$File	"episodic/weapon_oldmanharpoon.cpp"
+				$File	"episodic/weapon_striderbuster.cpp"
+				$File	"hl2/npc_alyx_episodic.cpp"
+				$File	"hl2/npc_alyx_episodic.h"
+				$File	"hl2/grenade_spit.cpp"
+				$File	"ai_behavior_passenger.cpp"
+			}
+
+			$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"
+			$File	"$SRCDIR\game\shared\achievements_hlx.cpp"
 			$File	"hl2\ai_allymanager.cpp"
 			$File	"hl2\ai_behavior_actbusy.cpp"
 			$File	"hl2\ai_behavior_actbusy.h"
@@ -120,7 +128,7 @@ $Project
 			$File	"hl2\grenade_frag.cpp"
 			$File	"hl2\grenade_frag.h"
 			$File	"hl2\hl2_ai_network.cpp"
-			$File	"hl2\hl2_client.cpp"  [!$HL2MP]
+			$File	"hl2\hl2_client.cpp"
 			$File	"hl2\hl2_eventlog.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl2_gamerules.cpp"
 			$File	"$SRCDIR\game\shared\hl2\hl2_gamerules.h"
@@ -150,8 +158,8 @@ $Project
 			$File	"hl2\item_suit.cpp"
 			$File	"hl2\look_door.cpp"
 			$File	"hl2\monster_dummy.cpp"
-			$File	"hl2\npc_alyx.cpp"
-			$File	"hl2\npc_alyx.h"
+			$File	"hl2\npc_alyx.cpp"	[!$USE_EPISODIC]
+			$File	"hl2\npc_alyx.h"	[!$USE_EPISODIC]
 			$File	"hl2\npc_antlion.cpp"
 			$File	"hl2\npc_antlion.h"
 			$File	"hl2\npc_antlionguard.cpp"
@@ -165,7 +173,7 @@ $Project
 			$File	"hl2\npc_basescanner.h"
 			$File	"hl2\npc_BaseZombie.cpp"
 			$File	"hl2\npc_BaseZombie.h"
-			//$File	"hl2\npc_blob.cpp"
+			$File	"hl2\npc_blob.cpp"
 			$File	"hl2\npc_breen.cpp"
 			$File	"hl2\npc_bullseye.cpp"
 			$File	"hl2\npc_bullseye.h"
@@ -237,29 +245,29 @@ $Project
 			$File	"hl2\vehicle_jeep.cpp"
 			$File	"hl2\vehicle_prisoner_pod.cpp"
 			$File	"hl2\vehicle_viewcontroller.cpp"
-			$File	"hl2\weapon_357.cpp"  [!$HL2MP]
+			$File	"hl2\weapon_357.cpp"
 			$File	"hl2\weapon_alyxgun.cpp"
 			$File	"hl2\weapon_alyxgun.h"
 			$File	"hl2\weapon_annabelle.cpp"
-			$File	"hl2\weapon_ar2.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_ar2.h"  [!$HL2MP]
+			$File	"hl2\weapon_ar2.cpp"
+			$File	"hl2\weapon_ar2.h"
 			$File	"hl2\weapon_bugbait.cpp"
 			$File	"hl2\weapon_citizenpackage.cpp"
 			$File	"hl2\weapon_citizenpackage.h"
-			$File	"hl2\weapon_crossbow.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_crowbar.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_crowbar.h"  [!$HL2MP]
+			$File	"hl2\weapon_crossbow.cpp"
+			$File	"hl2\weapon_crowbar.cpp"
+			$File	"hl2\weapon_crowbar.h"
 			$File	"weapon_cubemap.cpp"
-			$File	"hl2\weapon_frag.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_physcannon.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_physcannon.h"  [!$HL2MP]
-			$File	"hl2\weapon_pistol.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_rpg.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_rpg.h"  [!$HL2MP]
-			$File	"hl2\weapon_shotgun.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_smg1.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_stunstick.cpp"  [!$HL2MP]
-			$File	"hl2\weapon_stunstick.h"  [!$HL2MP]
+			$File	"hl2\weapon_frag.cpp"
+			$File	"hl2\weapon_physcannon.cpp"
+			$File	"hl2\weapon_physcannon.h"
+			$File	"hl2\weapon_pistol.cpp"
+			$File	"hl2\weapon_rpg.cpp"
+			$File	"hl2\weapon_rpg.h"
+			$File	"hl2\weapon_shotgun.cpp"
+			$File	"hl2\weapon_smg1.cpp"
+			$File	"hl2\weapon_stunstick.cpp"
+			$File	"hl2\weapon_stunstick.h"
 
 			$Folder	"Unused"
 			{

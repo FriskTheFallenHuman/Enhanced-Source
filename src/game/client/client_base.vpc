@@ -52,63 +52,6 @@ $Project
 {
 	$Folder	"Source Files"
 	{
-		$Folder	"GameUI"
-		{
-			$File	"gameui\backgroundmenubutton.cpp" \
-					"gameui\basesavegamedialog.cpp"\
-					"gameui\bitmapimagepanel.cpp"\
-					"gameui\commandcheckbutton.cpp"\
-					"gameui\contentcontroldialog.cpp"\
-					"gameui\createmultiplayergamebotpage.cpp"\
-					"gameui\createmultiplayergamedialog.cpp"\
-					"gameui\createmultiplayergamegameplaypage.cpp"\
-					"gameui\createmultiplayergameserverpage.cpp"\
-					"gameui\customtabexplanationdialog.cpp"\
-					"gameui\cvarnegatecheckbutton.cpp"\
-					"gameui\cvarslider.cpp"\
-					"gameui\cvartextentry.cpp"\
-					"gameui\cvartogglecheckbutton.cpp"\
-					"gameui\gameconsole.cpp"\
-					"gameui\gameconsoledialog.cpp"\
-					"gameui\gameui_interface.cpp"\
-					"gameui\gameui_util.cpp"\
-					"gameui\keytogglecheckbutton.cpp"\
-					"gameui\labeledcommandcombobox.cpp"\
-					"gameui\loadingdialog.cpp"\
-					"gameui\loadingtippanel.cpp"\
-					"gameui\logofile.cpp"\
-					"gameui\modinfo.cpp"\
-					"gameui\mousemessageforwardingpanel.cpp"\
-					"gameui\multiplayeradvanceddialog.cpp"\
-					"gameui\optionsdialog.cpp"\
-					"gameui\optionssubaudio.cpp"\
-					"gameui\optionssubdifficulty.cpp"\
-					"gameui\optionssubgame.cpp"\
-					"gameui\optionssubkeyboard.cpp"\
-					"gameui\optionssubmouse.cpp"\
-					"gameui\optionssubmultiplayer.cpp"\
-					"gameui\optionssubportal.cpp"\
-					"gameui\optionssubvideo.cpp"\
-					"gameui\optionssubvoice.cpp"\
-					"gameui\panellistpanel.cpp"\
-					"gameui\playerlistdialog.cpp"\
-					"gameui\rungameengine.cpp"\
-					"gameui\scriptobject.cpp"\
-					"gameui\sys_utils.cpp"\
-					"gameui\textentrybox.cpp"\
-					"gameui\urlbutton.cpp"\
-					"gameui\vcontrolslistpanel.cpp"\
-					"gameui\vguisystemmoduleloader.cpp"
-					{
-						$Configuration
-						{
-							$Compiler
-							{
-								$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
-							}
-						}
-					}
-		}
 		$File	"$SRCDIR\game\shared\ai_criteria.cpp"
 		$File	"$SRCDIR\game\shared\ai_criteria.h"
 		$File	"$SRCDIR\game\shared\ai_responsesystem.cpp"
@@ -121,6 +64,7 @@ $Project
 		$File	"cam_thirdperson.cpp"
 		$File	"c_baseglowanimating.h"
 		$File	"c_baseglowanimating.cpp"
+		$File	"c_mod_lesson_stubs.cpp"
 		$File	"c_baselesson.cpp"
 		$File	"c_baselesson.h"
 		$File	"c_basetoggle.cpp"
@@ -631,13 +575,6 @@ $Project
 			$File	"game_controls\vguitextwindow.cpp"
 			$File	"game_controls\IconPanel.cpp"
 		}
-		
-		$Folder	"Weapons"
-		{
-			$File	"$SRCDIR\game\shared\smmod\weapon_parse_custom_weapon.h"
-			$File	"$SRCDIR\game\shared\smmod\weapon_parse_custom_weapon.cpp"
-		}
-
 	}
 
 	$Folder	"MP3"
@@ -1237,6 +1174,7 @@ $Project
 		$Lib		videocfg
 		$Lib		vtf
 		$ImpLib		steam_api
+		$Lib 		"$LIBPUBLIC\vpklib"
 		$Lib 		"$LIBCOMMON\jpeglib" [!$VS2019]
 		$Lib 		"$LIBCOMMON\jpeglib_vs2019" [$VS2019]
  	}

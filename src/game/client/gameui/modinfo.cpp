@@ -127,6 +127,27 @@ const wchar_t *CModInfo::GetGameTitle2()
 //-----------------------------------------------------------------------------
 // Purpose: data accessor
 //-----------------------------------------------------------------------------
+const wchar_t *CModInfo::GetGameTitle3()
+{
+	if (!m_wcsGameTitle3[0])
+	{
+		// for some reason, the standard ILocalize::ConvertANSIToUnicode() strips off
+		// the '²' character in 'HALF-LIFE²' - so just do a straight upconvert to unicode
+		const char *title3 = m_pModData->GetString("title3", "");
+		int i = 0;
+		for (; title3[i] != 0; ++i)
+		{
+			m_wcsGameTitle3[i] = (wchar_t)title3[i];
+		}
+		m_wcsGameTitle3[i] = 0;
+	}
+
+	return m_wcsGameTitle3;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: data accessor
+//-----------------------------------------------------------------------------
 const char *CModInfo::GetGameName()
 {
 	return m_pModData->GetString("game", "");
@@ -147,7 +168,6 @@ bool CModInfo::HasPortals()
 {
 	return (stricmp(m_pModData->GetString("hasportals", "0"), "1") == 0);
 }
-
 
 //-----------------------------------------------------------------------------
 // Purpose: data accessor
@@ -190,6 +210,30 @@ bool CModInfo::AdvCrosshair()
 }
 
 //-----------------------------------------------------------------------------
+// Purpose: data accessor
+//-----------------------------------------------------------------------------
+bool CModInfo::UseGameLogo()
+{
+	return ( Q_stricmp( m_pModData->GetString( "gamelogo", "0" ), "1" ) == 0 );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: data accessor
+//-----------------------------------------------------------------------------
+bool CModInfo::UseBots()
+{
+	return ( Q_stricmp( m_pModData->GetString( "bots", "0" ), "1" ) == 0 );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: data accessor
+//-----------------------------------------------------------------------------
+bool CModInfo::HasHDContent()
+{
+	return ( Q_stricmp( m_pModData->GetString( "hashdcontent", "0" ), "1" ) == 0 );
+}
+
+//-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
 void CModInfo::LoadCurrentGameInfo()
@@ -208,10 +252,4 @@ void CModInfo::LoadGameInfoFromBuffer( const char *buffer )
 	m_pModData->LoadFromBuffer( "", buffer );
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: data accessor
-//-----------------------------------------------------------------------------
-bool CModInfo::UseGameLogo()
-{
-	return ( Q_stricmp( m_pModData->GetString( "gamelogo", "0" ), "1" ) == 0 );
-}
+

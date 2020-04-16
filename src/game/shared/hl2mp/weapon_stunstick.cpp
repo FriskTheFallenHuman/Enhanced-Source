@@ -48,6 +48,8 @@ extern ConVar metropolice_move_and_melee;
 #define CWeaponStunStick C_WeaponStunStick
 #endif
 
+#pragma warning(disable:4800)
+
 class CWeaponStunStick : public CBaseHL2MPBludgeonWeapon
 {
 	DECLARE_CLASS( CWeaponStunStick, CBaseHL2MPBludgeonWeapon );

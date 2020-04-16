@@ -103,6 +103,11 @@ ConVar ent_show_contexts( "ent_show_contexts", "0", 0, "Show entity contexts in 
 
 ConVar sv_script_think_interval("sv_script_think_interval", "0.1");
 
+#ifdef HL2_DLL
+// Game crashes on Precache? Turn it on and see what model cause it. [str]
+ConVar sv_modelprecache_debug( "sv_modelprecache_debug", "1", FCVAR_CHEAT );
+#endif // HL2_DLL
+
 // This table encodes edict data.
 void SendProxy_AnimTime( const SendProp *pProp, const void *pStruct, const void *pVarData, DVariant *pOut, int iElement, int objectID )
 {
@@ -4331,7 +4336,7 @@ void CBaseEntity::OnEntityEvent( EntityEvent_t event, void *pEventData )
 
 	if ( m_nSlimeTouch > 0 )
 	{
- 		nNewContents |= CONTENTS_SLIME;
+		nNewContents |= CONTENTS_SLIME;
 	}
 
 	if (( nNewContents & MASK_WATER ) == 0)
@@ -5459,11 +5464,43 @@ int CBaseEntity::PrecacheModel( const char *name )
 	}
 #endif
 
-	int idx = engine->PrecacheModel( name, true );
+#if defined ( HL2_DLL ) || defined ( PORTAL ) || defined ( HL2MP )
+	// Fix up old models
+	int idx = -1;
+
+	if ( sv_modelprecache_debug.GetBool() )
+		DevMsg( 2, " !! CBaseEntity::PrecacheModel : (pre) modelinfo->PrecacheModel %s \n", name );
+
+	idx = engine->PrecacheModel( name, true ); // Precache is giving model an index.
+
+	if ( sv_modelprecache_debug.GetBool() )
+		DevMsg( 2, " !! CBaseEntity::PrecacheModel : (post) modelinfo->PrecacheModel %s, index: %i \n", name, idx );
+
 	if ( idx != -1 )
 	{
-		PrecacheModelComponents( idx );
+		const model_t *model = modelinfo->GetModel( idx );
+		if ( model )
+		{
+			studiohdr_t *pStudioHdr = modelinfo->GetStudiomodel( model );
+			if ( pStudioHdr )
+			{
+				if ( !Studio_ConvertStudioHdrToNewVersion( pStudioHdr ) ) // Conversion itself
+					Warning( "Unable to convert %s\n", name );
+				else 
+				{
+					PrecacheModelComponents( idx ); // Conversion done, precaching what's left of model.
+
+					if ( sv_modelprecache_debug.GetBool() )
+						DevMsg( 2, " !! CBaseEntity::PrecacheModel : PrecacheModelComponents \n" );
+				}
+			}
+		}
 	}
+#else
+	int idx = engine->PrecacheModel( name, true );
+	if ( idx != -1 )
+		PrecacheModelComponents( idx );
+#endif
 
 #if defined( WATCHACCESS )
 	g_bWatching = true;
@@ -5766,7 +5803,7 @@ void CC_Find_Ent( const CCommand& args )
 	}
 
 	int iCount = 0;
- 	const char *pszSubString = args[1];
+	const char *pszSubString = args[1];
 	Msg("Searching for entities with class/target name containing substring: '%s'\n", pszSubString );
 
 	CBaseEntity *ent = NULL;
@@ -5794,7 +5831,7 @@ void CC_Find_Ent( const CCommand& args )
 
 		if ( bMatches )
 		{
- 			iCount++;
+			iCount++;
 			Msg("   '%s' : '%s' (entindex %d) \n", ent->GetClassname(), ent->GetEntityName().ToCStr(), ent->entindex() );
 		}
 	}
@@ -8110,7 +8147,7 @@ void CBaseEntity::SUB_FadeOut( void  )
 		SetRenderAlpha( 255 );
 		return;
 	}
-    
+	
 	SUB_PerformFadeOut();
 
 	if ( m_clrRender->a == 0 )

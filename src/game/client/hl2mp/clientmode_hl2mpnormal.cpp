@@ -30,7 +30,7 @@
 #include "glow_outline_effect.h"
 #include "ivieweffects.h"
 #include "voice_status.h"
-#include "nb_header_footer.h"
+//#include "nb_header_footer.h"
 #include "hud_macros.h"
 #include "view_shared.h"
 #include "hud_basechat.h"
@@ -251,8 +251,8 @@ int ClientModeHL2MPNormal::GetDeathMessageStartHeight( void )
 
 void ClientModeHL2MPNormal::Shutdown()
 {
-	if ( HL2BackgroundMovie() )
-		HL2BackgroundMovie()->ClearCurrentMovie();
+	/*if ( BackgroundMovie() )
+		BackgroundMovie()->ClearCurrentMovie();*/
 }
 
 void ClientModeHL2MPNormal::InitViewport()

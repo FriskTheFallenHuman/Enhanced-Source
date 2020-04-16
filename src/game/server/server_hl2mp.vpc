@@ -9,6 +9,7 @@ $Macro GAMENAME 	"hl2mp_template"
 
 $Include "$SRCDIR\game\server\server_base.vpc"
 $Include "$SRCDIR\game\server\server_hl2_base.vpc"
+$Include "$SRCDIR\game\server\server_deferred_base.vpc" [$USE_DEFFERED]
 
 $Configuration
 {
@@ -23,6 +24,9 @@ $Project "Server (HL2MP)"
 {
 	$Folder	"Source Files"
 	{
+		-$File	"base_gameinterface.cpp"
+		-$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"
+
 		$File	"basegrenade_concussion.cpp"
 		$File	"basegrenade_contact.cpp"
 		$File	"basegrenade_timed.cpp"
@@ -43,6 +47,29 @@ $Project "Server (HL2MP)"
 		$File	"trigger_area_capture.h"
 		$File   "$SRCDIR\game\shared\teamplay_round_timer.cpp"
 		$File   "$SRCDIR\game\shared\teamplay_round_timer.h"
+
+		$Folder	"HL2 DLL"
+		{
+			-$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"
+			-$File	"$SRCDIR\game\shared\achievements_hlx.cpp"
+			-$File	"hl2\hl2_client.cpp"
+			-$File	"hl2\weapon_357.cpp"
+			-$File	"hl2\weapon_ar2.cpp"
+			-$File	"hl2\weapon_ar2.h"
+			-$File	"hl2\weapon_crossbow.cpp"
+			-$File	"hl2\weapon_crowbar.cpp"
+			-$File	"hl2\weapon_crowbar.h"
+			-$File	"hl2\weapon_frag.cpp"
+			-$File	"hl2\weapon_physcannon.cpp"
+			-$File	"hl2\weapon_physcannon.h"
+			-$File	"hl2\weapon_pistol.cpp"
+			-$File	"hl2\weapon_rpg.cpp"
+			-$File	"hl2\weapon_rpg.h"
+			-$File	"hl2\weapon_shotgun.cpp"
+			-$File	"hl2\weapon_smg1.cpp"
+			-$File	"hl2\weapon_stunstick.cpp"
+			-$File	"hl2\weapon_stunstick.h"
+		}
 
 		$Folder	"HL2MP"
 		{

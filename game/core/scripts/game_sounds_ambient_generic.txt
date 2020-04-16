@@ -133,6 +133,21 @@
 	"wave"	"ambient/fire/firebig.wav"
 }
 
+"Splash.SplashSound"
+{
+	"channel"	"CHAN_AUTO"
+	"volume"	"0.75"
+	"soundlevel"  "SNDLVL_75dB"
+	"pitch"	"90, 100"
+
+	"rndwave"
+	{
+		"wave"	"ambient/water/water_spray1.wav"
+		"wave"	"ambient/water/water_spray2.wav"
+		"wave"	"ambient/water/water_spray3.wav"
+	}
+}
+
 "DoSpark"
 {
 	"channel"	"CHAN_VOICE"

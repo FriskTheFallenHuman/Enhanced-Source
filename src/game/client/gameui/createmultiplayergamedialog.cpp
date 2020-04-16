@@ -38,10 +38,8 @@ CCreateMultiplayerGameDialog::CCreateMultiplayerGameDialog(vgui::Panel *parent) 
 	SetTitle("#GameUI_CreateServer", true);
 	SetOKButtonText("#GameUI_Start");
 
-	if (!stricmp( ModInfo().GetGameName(), "Counter-Strike Source" ))
-	{
+	if ( ModInfo().UseBots() )
 		m_bBotsEnabled = true;
-	}
 
 	m_pServerPage = new CCreateMultiplayerGameServerPage(this, "ServerPage");
 	m_pGameplayPage = new CCreateMultiplayerGameGameplayPage(this, "GameplayPage");

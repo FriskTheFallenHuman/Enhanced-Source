@@ -47,9 +47,6 @@
 #include "filters.h"
 #include "tier0/icommandline.h"
 #include "logic_playerproxy.h"
-#ifdef HL2_PLAYERANIMSTATE
-#include "bone_setup.h" //animstate implementation
-#endif
 
 #ifdef HL2_EPISODIC
 //#include "npc_alyx_episodic.h"
@@ -380,19 +377,10 @@ BEGIN_DATADESC( CHL2_Player )
 
 	//DEFINE_FIELD( m_hPlayerProxy, FIELD_EHANDLE ), //Shut up class check!
 
-#ifdef HL2_PLAYERANIMSTATE
-	DEFINE_FIELD(m_angEyeAngles, FIELD_VECTOR),
-#endif
-
 END_DATADESC()
 
 CHL2_Player::CHL2_Player()
 {
-#ifdef HL2_PLAYERANIMSTATE
-	m_PlayerAnimState = CreateHL2PlayerAnimState(this);
-	UseClientSideAnimation();
-	m_angEyeAngles.Init();
-#endif
 	m_nNumMissPositions	= 0;
 	m_pPlayerAISquad = 0;
 	m_bSprintEnabled = true;
@@ -423,24 +411,6 @@ CSuitPowerDevice SuitDeviceBreather( bits_SUIT_DEVICE_BREATHER, 6.7f );		// 100 
 IMPLEMENT_SERVERCLASS_ST(CHL2_Player, DT_HL2_Player)
 	SendPropDataTable(SENDINFO_DT(m_HL2Local), &REFERENCE_SEND_TABLE(DT_HL2Local), SendProxy_SendLocalDataTable),
 	SendPropBool( SENDINFO(m_fIsSprinting) ),
-#ifdef HL2_PLAYERANIMSTATE
-	SendPropAngle(SENDINFO_VECTORELEM(m_angEyeAngles, 0), 11, SPROP_CHANGES_OFTEN),
-	SendPropAngle(SENDINFO_VECTORELEM(m_angEyeAngles, 1), 11, SPROP_CHANGES_OFTEN),
-	SendPropExclude("DT_BaseAnimating", "m_flPlaybackRate"),
-	SendPropExclude("DT_BaseAnimating", "m_nSequence"),
-	SendPropExclude("DT_BaseAnimating", "m_nNewSequenceParity"),
-	SendPropExclude("DT_BaseAnimating", "m_nResetEventsParity"),
-	SendPropExclude("DT_BaseEntity", "m_angRotation"),
-	SendPropExclude("DT_BaseAnimatingOverlay", "overlay_vars"),
-	SendPropExclude("DT_BaseFlex", "m_viewtarget"),
-	SendPropExclude("DT_BaseFlex", "m_flexWeight"),
-	SendPropExclude("DT_BaseFlex", "m_blinktoggle"),
-
-	// hl2_playeranimstate.cpp and clientside animation takes care of these on the client
-	SendPropExclude("DT_ServerAnimationData", "m_flCycle"),
-	SendPropExclude("DT_AnimTimeMustBeFirst", "m_flAnimTime"),
-	SendPropExclude("DT_BaseAnimating", "m_flPoseParameter"),
-#endif
 END_SEND_TABLE()
 
 
@@ -459,94 +429,8 @@ void CHL2_Player::Precache( void )
 	PrecacheScriptSound( "HL2Player.TrainUse" );
 	PrecacheScriptSound( "HL2Player.Use" );
 	PrecacheScriptSound( "HL2Player.BurnPain" );
-#ifdef HL2_PLAYERANIMSTATE
-	PrecacheModel("models/player/chell/player.mdl");
-#endif
 }
 
-#ifdef HL2_PLAYERANIMSTATE
-void CHL2_Player::DoAnimationEvent(PlayerAnimEvent_t event, int nData)
-{
-	m_PlayerAnimState->DoAnimationEvent(event, nData);
-	//TE_PlayerAnimEvent( this, event, nData );	// Send to any clients who can see this guy.
-}
-
-void CHL2_Player::SetAnimation(PLAYER_ANIM playerAnim)
-{
-	return; //handled clientside by hl2_playeranimstate
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Override setup bones so that it uses render angles from
-//			the Portal animation state to setup hitboxes.
-//-----------------------------------------------------------------------------
-void CHL2_Player::SetupBones(matrix3x4_t *pBoneToWorld, int boneMask)
-{
-	VPROF_BUDGET("CBaseAnimating::SetupBones", VPROF_BUDGETGROUP_SERVER_ANIM);
-
-	// Set the mdl cache semaphore.
-	MDLCACHE_CRITICAL_SECTION();
-
-	// Get the studio header.
-	Assert(GetModelPtr());
-	CStudioHdr *pStudioHdr = GetModelPtr();
-
-	Vector pos[MAXSTUDIOBONES];
-	Quaternion q[MAXSTUDIOBONES];
-
-	// Adjust hit boxes based on IK driven offset.
-	Vector adjOrigin = GetAbsOrigin() + Vector(0, 0, m_flEstIkOffset);
-
-	// FIXME: pass this into Studio_BuildMatrices to skip transforms
-	CBoneBitList boneComputed;
-	if (m_pIk)
-	{
-		m_iIKCounter++;
-		m_pIk->Init(pStudioHdr, GetAbsAngles(), adjOrigin, gpGlobals->curtime, m_iIKCounter, boneMask);
-		GetSkeleton(pStudioHdr, pos, (QuaternionAligned*)q, boneMask);
-
-		m_pIk->UpdateTargets(pos, q, (matrix3x4a_t*)pBoneToWorld, boneComputed);
-		CalculateIKLocks(gpGlobals->curtime);
-		m_pIk->SolveDependencies(pos, q, (matrix3x4a_t*)pBoneToWorld, boneComputed);
-	}
-	else
-	{
-		GetSkeleton(pStudioHdr, pos, (QuaternionAligned*)q, boneMask);
-	}
-
-	CBaseAnimating *pParent = dynamic_cast< CBaseAnimating* >(GetMoveParent());
-	if (pParent)
-	{
-		// We're doing bone merging, so do special stuff here.
-		CBoneCache *pParentCache = pParent->GetBoneCache();
-		if (pParentCache)
-		{
-			BuildMatricesWithBoneMerge(
-				pStudioHdr,
-				m_PlayerAnimState->GetRenderAngles(),
-				adjOrigin,
-				pos,
-				q,
-				pBoneToWorld,
-				pParent,
-				pParentCache);
-
-			return;
-		}
-	}
-
-	Studio_BuildMatrices(
-		pStudioHdr,
-		m_PlayerAnimState->GetRenderAngles(),
-		adjOrigin,
-		pos,
-		q,
-		-1,
-		1.0f,
-		(matrix3x4a_t*)pBoneToWorld,
-		boneMask);
-}
-#endif
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
@@ -1007,21 +891,10 @@ void CHL2_Player::PreThink(void)
 void CHL2_Player::PostThink( void )
 {
 	BaseClass::PostThink();
-#ifdef HL2_PLAYERANIMSTATE
-	
-	m_angEyeAngles = EyeAngles(); //Store eye angles pitch so client can compute its animation state correctly
-
-	QAngle angles = GetLocalAngles();
-	angles[PITCH] = 0;
-	SetLocalAngles(angles);
-
-	m_PlayerAnimState->Update(m_angEyeAngles[YAW], m_angEyeAngles[PITCH]);
-
-#endif
 
 	if ( !g_fGameOver && !IsPlayerLockedInPlace() && IsAlive() )
 	{
-		 HandleAdmireGlovesAnimation();
+		HandleAdmireGlovesAnimation();
 	}
 }
 
@@ -1232,11 +1105,7 @@ void CHL2_Player::Spawn(void)
 
 #ifndef HL2MP
 #ifndef PORTAL
-#ifndef HL2_PLAYERANIMSTATE
 	SetModel( "models/player.mdl" );
-#else
-	SetModel("models/player/chell/player.mdl"); //animstate
-#endif
 #endif
 #endif
 
@@ -1506,10 +1375,6 @@ void CHL2_Player::InitVCollision( const Vector &vecAbsOrigin, const Vector &vecA
 
 CHL2_Player::~CHL2_Player( void )
 {
-#ifdef HL2_PLAYERANIMSTATE
-	if (m_PlayerAnimState)
-		m_PlayerAnimState->Release();
-#endif
 }
 
 //-----------------------------------------------------------------------------

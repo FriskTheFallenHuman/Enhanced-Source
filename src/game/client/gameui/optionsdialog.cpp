@@ -5,6 +5,7 @@
 // $NoKeywords: $
 //=============================================================================//
 
+#include "BasePanel.h"
 #include "OptionsDialog.h"
 
 #include "vgui_controls/Button.h"
@@ -37,59 +38,45 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 // Purpose: Basic help dialog
 //-----------------------------------------------------------------------------
-COptionsDialog::COptionsDialog(vgui::Panel *parent, OptionsDialogTabStyle iTabStyle) : PropertyDialog(parent, "OptionsDialog")
+COptionsDialog::COptionsDialog(vgui::Panel *parent) : PropertyDialog(parent, "OptionsDialog")
 {
-	SetProportional( true );
-	SetDeleteSelfOnClose( true );
-	SetBounds( 
-		0, 
-		0, 
-		vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), 512 ),
-		vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), 415 ) );
+	SetDeleteSelfOnClose(true);
+	SetBounds(0, 0, 512, 406);
 	SetSizeable( false );
+
+	SetTitle("#GameUI_Options", true);
 
 	// debug timing code, this function takes too long
 //	double s4 = system()->GetCurrentTime();
 
-	if ( iTabStyle == OPTIONS_DIALOG_ALL_TABS )
+	if (ModInfo().IsSinglePlayerOnly() && !ModInfo().NoDifficulty())
 	{
-		SetTitle("#GameUI_Options", true);
-
-		if ( ModInfo().IsSinglePlayerOnly() && !ModInfo().NoDifficulty() )
-		{
-			AddPage(new COptionsSubDifficulty(this), "#GameUI_Difficulty");
-		}
-
-		if ( ModInfo().HasPortals() )
-		{
-			AddPage(new COptionsSubPortal(this), "#GameUI_Portal");
-		}
-
-		AddPage(new COptionsSubKeyboard(this), "#GameUI_Keyboard");
-		AddPage(new COptionsSubMouse(this), "#GameUI_Mouse");
-
-		m_pOptionsSubAudio = new COptionsSubAudio(this);
-		AddPage(m_pOptionsSubAudio, "#GameUI_Audio");
-		m_pOptionsSubVideo = new COptionsSubVideo(this);
-		AddPage(m_pOptionsSubVideo, "#GameUI_Video");
-
-		if ( !ModInfo().IsSinglePlayerOnly() ) 
-		{
-			AddPage(new COptionsSubVoice(this), "#GameUI_Voice");
-		}
-
-		// add the multiplay page last, if we're combo single/multi or just multi
-		if ( (ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) ||
-			 (!ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) )
-		{
-			AddPage(new COptionsSubMultiplayer(this), "#GameUI_Multiplayer");
-		}
+		AddPage(new COptionsSubDifficulty(this), "#GameUI_Difficulty");
 	}
-	else if ( iTabStyle == OPTIONS_DIALOG_ONLY_BINDING_TABS )
-	{
-		SetTitle("#L4D360UI_Controller_Edit_Keys_Buttons", true);
 
-		AddPage(new COptionsSubKeyboard(this), "#GameUI_Console_UserSettings");
+	if (ModInfo().HasPortals())
+	{
+		AddPage(new COptionsSubPortal(this), "#GameUI_Portal");
+	}
+
+	AddPage(new COptionsSubKeyboard(this), "#GameUI_Keyboard");
+	AddPage(new COptionsSubMouse(this), "#GameUI_Mouse");
+
+	m_pOptionsSubAudio = new COptionsSubAudio(this);
+	AddPage(m_pOptionsSubAudio, "#GameUI_Audio");
+	m_pOptionsSubVideo = new COptionsSubVideo(this);
+	AddPage(m_pOptionsSubVideo, "#GameUI_Video");
+
+	if ( !ModInfo().IsSinglePlayerOnly() ) 
+	{
+		AddPage(new COptionsSubVoice(this), "#GameUI_Voice");
+	}
+
+	// add the multiplay page last, if we're combo single/multi or just multi
+	if ( (ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) ||
+		 (!ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) )
+	{
+		AddPage(new COptionsSubMultiplayer(this), "#GameUI_Multiplayer");
 	}
 
 //	double s5 = system()->GetCurrentTime();
@@ -122,14 +109,6 @@ void COptionsDialog::Run()
 {
 	SetTitle("#GameUI_Options", true);
 	Activate();
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Opens the gamma dialog directly
-//-----------------------------------------------------------------------------
-void COptionsDialog::OpenGammaDialog()
-{
-	m_pOptionsSubVideo->OpenGammaDialog();
 }
 
 //-----------------------------------------------------------------------------

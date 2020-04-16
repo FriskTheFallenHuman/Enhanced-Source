@@ -160,7 +160,7 @@ PRECACHE_REGISTER_BEGIN( GLOBAL, ClientGamePrecache )
 	PRECACHE( GAMESOUND, "Geiger.BeepHigh" );
 	PRECACHE( GAMESOUND, "Geiger.BeepLow" );
 
-	PRECACHE( KV_DEP_FILE, "resource/ParticleEmitters.txt" )
+	PRECACHE( KV_DEP_FILE, "scripts/client_precache.txt" )
 PRECACHE_REGISTER_END()
 
 void ClientGamePrecache( void )

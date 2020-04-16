@@ -32,19 +32,10 @@
 		//
 		SearchPaths
 		{
-			// Look for our content under our gamepath. pak01_dir will be read first, then loose files.
 			Game				|gameinfo_path|.
-			
-			// This has the portal assets.
 			Game				portal
-			
-			// This has the hl2 assets.
 			Game				hl2
-
-			// Like the Source 2006 base, you need to include this folder as it has ALL of the content that is mostly shared.
 			Game				core
-
-			// The platform folder, has the stuff to make the engine run.
 			Game				platform
 		}
 	}

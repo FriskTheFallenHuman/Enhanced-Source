@@ -1,6 +1,6 @@
 "Resource/HudLayout.res"
 {
-	HudHealth [$WIN32]
+	HudHealth
 	{
 		"fieldName"		"HudHealth"
 		"xpos"	"16"
@@ -17,25 +17,8 @@
 		"digit_xpos" "50"
 		"digit_ypos" "2"
 	}
-	HudHealth [$X360]
-	{
-		"fieldName"		"HudHealth"
-		"xpos"	"48"
-		"ypos"	"416"
-		"wide"	"115"
-		"tall"  "36"
-		"visible" "1"
-		"enabled" "1"
-
-		"PaintBackgroundType"	"2"
-		
-		"text_xpos" "8"
-		"text_ypos" "18"
-		"digit_xpos" "60"
-		"digit_ypos" "-1"
-	}
 	
-	HudSuit [$WIN32]
+	HudSuit
 	{
 		"fieldName"		"HudSuit"
 		"xpos"	"140"
@@ -47,30 +30,14 @@
 
 		"PaintBackgroundType"	"2"
 
+		
 		"text_xpos" "8"
 		"text_ypos" "20"
 		"digit_xpos" "50"
 		"digit_ypos" "2"
 	}
-	HudSuit [$X360]
-	{
-		"fieldName"		"HudSuit"
-		"xpos"	"176"
-		"ypos"	"416"
-		"wide"	"117"
-		"tall"  "36"
-		"visible" "1"
-		"enabled" "1"
 
-		"PaintBackgroundType"	"2"
-
-		"text_xpos" "8"
-		"text_ypos" "18"
-		"digit_xpos" "50"
-		"digit_ypos" "-1"
-	}
-
-	HudAmmo	[$WIN32]
+	HudAmmo
 	{
 		"fieldName" "HudAmmo"
 		"xpos"	"r150"
@@ -89,27 +56,8 @@
 		"digit2_xpos" "98"
 		"digit2_ypos" "16"
 	}
-	HudAmmo	[$X360]
-	{
-		"fieldName" "HudAmmo"
-		"xpos"	"r208"
-		"ypos"	"416"
-		"wide"	"160"
-		"tall"  "36"
-		"visible" "1"
-		"enabled" "1"
 
-		"PaintBackgroundType"	"2"
-
-		"text_xpos" "8"
-		"text_ypos" "18"
-		"digit_xpos" "60"
-		"digit_ypos" "-1"
-		"digit2_xpos" "120"
-		"digit2_ypos" "14"
-	}
-
-	HudAmmoSecondary	[$WIN32]
+	HudAmmoSecondary
 	{
 		"fieldName" "HudAmmoSecondary"
 		"xpos"	"r76"
@@ -121,30 +69,11 @@
 
 		"PaintBackgroundType"	"2"
 
-		"text_xpos" "8"
-		"text_ypos" "22"
-		"digit_xpos" "36"
+		"digit_xpos" "10"
 		"digit_ypos" "2"
 	}
-	HudAmmoSecondary	[$X360]
-	{
-		"fieldName" "HudAmmoSecondary"
-		"xpos"	"r113"
-		"ypos"	"416"
-		"wide"	"65"
-		"tall"  "36"
-		"visible" "1"
-		"enabled" "1"
-
-		"PaintBackgroundType"	"2"
-
-		"text_xpos" "8"
-		"text_ypos" "22"
-		"digit_xpos" "36"
-		"digit_ypos" "-1"
-	}
 	
-	HudSuitPower	[$WIN32]
+	HudSuitPower
 	{
 		"fieldName" "HudSuitPower"
 		"visible" "1"
@@ -173,87 +102,24 @@
 
 		"PaintBackgroundType"	"2"
 	}
-	HudSuitPower	[$X360]
-	{
-		"fieldName" "HudSuitPower"
-		"visible" "1"
-		"enabled" "1"
-		"xpos"	"48"
-		"ypos"	"370"
-		"wide"	"102"
-		"tall"	"26"
-		
-		"AuxPowerLowColor" "255 100 0 220"
-		"AuxPowerHighColor" "255 220 0 220"
-		"AuxPowerDisabledAlpha" "70"
-
-		"BarInsetX" "8"
-		"BarInsetY" "19"
-		"BarWidth" "92"
-		"BarHeight" "5"
-		"BarChunkWidth" "6"
-		"BarChunkGap" "3"
-
-		"text_xpos" "8"
-		"text_ypos" "4"
-		"text2_xpos" "8"
-		"text2_ypos" "25"
-		"text2_gap" "12"
-
-		"PaintBackgroundType"	"2"
-	}
-
-	HudPosture	[$WIN32]
-	{
-		"fieldName" 		"HudPosture"
-		"visible" 		"1"
-		"PaintBackgroundType"	"2"
-		"xpos"	"16"
-		"ypos"	"316"
-		"tall"  "36"
-		"wide"	"36"
-		"font"	"WeaponIconsSmall"
-		"icon_xpos"	"10"
-		"icon_ypos" 	"0"
-	}
-	HudPosture	[$X360]
-	{
-		"fieldName" 		"HudPosture"
-		"visible" 		"1"
-		"PaintBackgroundType"	"2"
-		"xpos"	"48"
-		"ypos"	"316"
-		"tall"  "36"
-		"wide"	"36"
-		"font"	"WeaponIconsSmall"
-		"icon_xpos"	"10"
-		"icon_ypos" 	"2"
-	}
 	
 	HudFlashlight
 	{
 		"fieldName" "HudFlashlight"
-		"visible" "1"
+		"visible" "0"
+		"enabled" "1"
+		"xpos"	"16"
+		"ypos"	"370"
+		"wide"	"102"
+		"tall"	"20"
+		
+		"text_xpos" "8"
+		"text_ypos" "6"
+		"TextColor"	"255 170 0 220"
+
 		"PaintBackgroundType"	"2"
-		"xpos"	"270"		[$WIN32]
-		"ypos"	"444"		[$WIN32]
-		"xpos_hidef"	"293"		[$X360]		// aligned to left
-		"xpos_lodef"	"c-18"		[$X360]		// centered in screen
-		"ypos"	"428"		[$X360]				
-		"tall"  "24"
-		"wide"	"36"
-		"font"	"WeaponIconsSmall"
-		
-		"icon_xpos"	"4"
-		"icon_ypos" "-8"
-		
-		"BarInsetX" "4"
-		"BarInsetY" "18"
-		"BarWidth" "28"
-		"BarHeight" "2"
-		"BarChunkWidth" "2"
-		"BarChunkGap" "1"
 	}
+	
 	HudDamageIndicator
 	{
 		"fieldName" "HudDamageIndicator"
@@ -277,24 +143,17 @@
 		"Circle1Radius" "66"
 		"Circle2Radius"	"74"
 		"DashGap"	"16"
-		"DashHeight" "4"	[$WIN32]
-		"DashHeight" "6"	[$X360]		
+		"DashHeight" "4"
 		"BorderThickness" "88"
 	}
+
 	HudWeaponSelection
 	{
 		"fieldName" "HudWeaponSelection"
-		"ypos" 	"16"	[$WIN32]
-		"ypos" 	"32"	[$X360]
+		"ypos" 	"16"
 		"visible" "1"
 		"enabled" "1"
 		"SmallBoxSize" "32"
-		"MediumBoxWide"	"95"
-		"MediumBoxWide_hidef"	"78"
-		"MediumBoxTall"	"50"
-		"MediumBoxTall_hidef"	"50"
-		"MediumBoxWide_lodef"	"74"
-		"MediumBoxTall_lodef"	"50"
 		"LargeBoxWide" "112"
 		"LargeBoxTall" "80"
 		"BoxGap" "8"
@@ -363,7 +222,7 @@
 		"fieldName" "HudMessage"
 		"visible" "1"
 		"enabled" "1"
-		"wide"	 "f0"
+		"wide"	 "640"
 		"tall"	 "480"
 	}
 
@@ -382,11 +241,9 @@
 		"visible"	"1"
 		"enabled"	"1"
 		"xpos"		"c-250"
-		"ypos"		"276"	[$WIN32]
-		"ypos"		"236"	[$X360]
+		"ypos"		"276"
 		"wide"		"500"
-		"tall"		"136"	[$WIN32]
-		"tall"		"176"	[$X360]
+		"tall"		"136"
 
 		"BgAlpha"	"128"
 
@@ -394,8 +251,7 @@
 		"ItemHiddenTime"	"0.2"  // Nearly same as grow time so that the item doesn't start to show until growth is finished
 		"ItemFadeInTime"	"0.15"	// Once ItemHiddenTime is finished, takes this much longer to fade in
 		"ItemFadeOutTime"	"0.3"
-		"topoffset"		"0"		[$WIN32]
-		"topoffset"		"0"	[$X360]
+		"topoffset"		"0"
 	}
 
 	HudChat
@@ -409,7 +265,7 @@
 		"tall"	 "4"
 	}
 
-	HudHistoryResource	[$WIN32]
+	HudHistoryResource
 	{
 		"fieldName" "HudHistoryResource"
 		"visible" "1"
@@ -419,26 +275,9 @@
 		"wide"	 "248"
 		"tall"	 "320"
 
-		"history_gap"	"56" [!$OSX]
-		"history_gap"	"64" [$OSX]
-		"icon_inset"	"38"
-		"text_inset"	"36"
+		"history_gap"	"56"
+		"icon_inset"	"28"
 		"text_inset"	"26"
-		"NumberFont"	"HudNumbersSmall"
-	}
-	HudHistoryResource	[$X360]
-	{
-		"fieldName" "HudHistoryResource"
-		"visible" "1"
-		"enabled" "1"
-		"xpos"	"r300"
-		"ypos"	"40" 
-		"wide"	 "248"
-		"tall"	 "240"
-
-		"history_gap"	"50"
-		"icon_inset"	"38"
-		"text_inset"	"36"
 		"NumberFont"	"HudNumbersSmall"
 	}
 
@@ -488,34 +327,13 @@
 
 	HudHintDisplay
 	{
-		"fieldName"				"HudHintDisplay"
-		"visible"				"0"
-		"enabled"				"1"
-		"xpos"					"c-240"
-		"ypos"					"c60"
-		"xpos"	"r148"	[$X360]
-		"ypos"	"r338"	[$X360]
-		"wide"					"480"
-		"tall"					"100"
-		"HintSize"				"1"
-		"text_xpos"				"8"
-		"text_ypos"				"8"
-		"center_x"				"0"	// center text horizontally
-		"center_y"				"-1"	// align text on the bottom
-		"paintbackground"		"0"
-	}	
-
-	HudHintKeyDisplay
-	{
-		"fieldName"	"HudHintKeyDisplay"
+		"fieldName"	"HudHintDisplay"
 		"visible"	"0"
-		"enabled" 	"1"
-		"xpos"		"r120"	[$WIN32]
-		"ypos"		"r340"	[$WIN32]
-		"xpos"		"r148"	[$X360]
-		"ypos"		"r338"	[$X360]
-		"wide"		"100"
-		"tall"		"200"
+		"enabled" "1"
+		"xpos"	"r120"
+		"ypos"	"r340"
+		"wide"	"100"
+		"tall"	"200"
 		"text_xpos"	"8"
 		"text_ypos"	"8"
 		"text_xgap"	"8"
@@ -525,8 +343,7 @@
 		"PaintBackgroundType"	"2"
 	}
 
-
-	HudSquadStatus	[$WIN32]
+	HudSquadStatus
 	{
 		"fieldName"	"HudSquadStatus"
 		"visible"	"1"
@@ -544,27 +361,8 @@
 
 		"PaintBackgroundType"	"2"
 	}
-	HudSquadStatus	[$X360]
-	{
-		"fieldName"	"HudSquadStatus"
-		"visible"	"1"
-		"enabled" "1"
-		"xpos"	"r182"
-		"ypos"	"348"
-		"wide"	"134"
-		"tall"	"62"
-		"text_xpos"	"8"
-		"text_ypos"	"44"
-		"SquadIconColor"	"255 220 0 160"
-		"IconInsetX"	"8"
-		"IconInsetY"	"-4"
-		"IconGap"		"24"
-		"IconFont"		"SquadIcon"
 
-		"PaintBackgroundType"	"2"
-	}
-
-	HudPoisonDamageIndicator	[$WIN32]
+	HudPoisonDamageIndicator
 	{
 		"fieldName"	"HudPoisonDamageIndicator"
 		"visible"	"0"
@@ -579,22 +377,6 @@
 		"TextColor"	"255 170 0 220"
 		"PaintBackgroundType"	"2"
 	}
-	HudPoisonDamageIndicator	[$X360]
-	{
-		"fieldName"	"HudPoisonDamageIndicator"
-		"visible"	"0"
-		"enabled" "1"
-		"xpos"	"48"
-		"ypos"	"264"
-		"wide"	"192"
-		"tall"	"46"
-		"text_xpos"	"8"
-		"text_ypos"	"6"
-		"text_ygap" "16"
-		"TextColor"	"255 170 0 220"
-		"PaintBackgroundType"	"2"
-	}
-
 	HudCredits
 	{
 		"fieldName"	"HudCredits"
@@ -613,10 +395,8 @@
 		"fieldName" "HUDAutoAim"
 		"visible" "1"
 		"enabled" "1"
-		"wide"	 "640"	[$WIN32]
-		"tall"	 "480"	[$WIN32]
-		"wide"	 "960"	[$X360]
-		"tall"	 "720"	[$X360]
+		"wide"	 "640"
+		"tall"	 "480"
 	}
 
 	HudCommentary
@@ -671,29 +451,4 @@
 		"LeftTitleY"	"422"
 		"RightTitleY"	"422"
 	}
-
-	AchievementNotificationPanel	
-	{
-		"fieldName"				"AchievementNotificationPanel"
-		"visible"				"1"
-		"enabled"				"1"
-		"xpos"					"0"
-		"ypos"					"180"
-		"wide"					"f10"	[$WIN32]
-		"wide"					"f60"	[$X360]
-		"tall"					"100"
-	}
-
-	CHudVote
-	{
-		"fieldName"		"CHudVote"
-		"xpos"			"0"			
-		"ypos"			"0"
-		"wide"			"640"
-		"tall"			"480"
-		"visible"		"1"
-		"enabled"		"1"
-		"bgcolor_override"	"0 0 0 0"
-		"PaintBackgroundType"	"0" // rounded corners
-	}	
 }

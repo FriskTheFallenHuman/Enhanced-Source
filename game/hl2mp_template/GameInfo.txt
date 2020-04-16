@@ -3,8 +3,8 @@
 	game	"Half-Life 2 DM"
 	title	"HALF+LIFE'"
 	title2	"deathmatch"
-	type		multiplayer_only
-    "icon"		"game"
+	type	multiplayer_only
+    "icon"	"game"
 
 	nomodels 0
 	nohimodel 1
@@ -44,16 +44,9 @@
 		//
 		SearchPaths
 		{
-			// Look for our content under our gamepath. pak01_dir will be read first, then loose files.
 			Game				|gameinfo_path|.
-			
-			// This has some resources.
-			Game				template_additional_content
-
-			// Like the Source 2006 base, you need to include this folder as it has ALL of the content that is mostly shared.
+			Game				hl2
 			Game				core
-
-			// The platform folder, has the stuff to make the engine run.
 			Game				platform
 		}
 	}

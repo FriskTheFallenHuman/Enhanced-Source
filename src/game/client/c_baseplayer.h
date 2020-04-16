@@ -387,6 +387,9 @@ public:
 	virtual void ExitLadder() {}
 	surfacedata_t *GetLadderSurface( const Vector &origin );
 
+	// ADAPT
+	surfacedata_t *GetSurfaceData( void ) { return m_pSurfaceData; }
+
 	void	ForceButtons( int nButtons );
 	void	UnforceButtons( int nButtons );
 
@@ -476,7 +479,7 @@ public:
 private:
 	float					m_flWaterJumpTime;  // used to be called teleport_time
 	float					m_flSwimSoundTime;
-protected:
+public:
 	float					m_flStepSoundTime;
 	float					m_surfaceFriction;
 private:
@@ -637,6 +640,7 @@ private:
 	friend class CASW_MarineGameMovement;
 	friend class CPaintGameMovement;
 	
+public:
 	// Accessors for gamemovement
 	float GetStepSize( void ) const { return m_Local.m_flStepSize; }
 

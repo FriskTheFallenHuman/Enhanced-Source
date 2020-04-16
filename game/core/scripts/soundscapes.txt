@@ -76,6 +76,80 @@
 	"dsp_volume" "0.5"
 }
 
+
+// *******************************************************************************
+// ***************** E3_Techdemo_01 - 06 *****************
+
+// e3_techdemo_01
+
+"e3_techdemo_gmanspeaking"
+{
+	"dsp"	"10"
+}
+
+"e3_Techdemo_02"
+{
+	"dsp"	"20"	
+
+	// physics room
+
+	"playlooping"
+	{
+		"volume"	"0.1"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient/machines/courtyard_mach_loop.wav"
+	}
+}
+
+"e3_Techdemo_03"
+{
+	"dsp"	"1"	
+
+}
+
+"e3_Techdemo_05"
+{
+	"dsp"	"10"
+
+	// dripping cave ambient
+
+	"playlooping"
+	{
+		"volume"	"0.23"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient/water/corridor_water.wav"
+	}
+}
+
+"e3_Techdemo_06"
+{
+	"dsp"	"20"	
+
+	// lake
+
+	"playlooping"
+	{
+		"volume"	"0.5"
+		"pitch"		"100"
+		"attenuation"	"0"
+		"wave"		"ambient/water/lake_water.wav"
+	}
+}
+
+"e3_end"
+{
+	"dsp" "0"
+}
+
+// ***************** E3_Techdemo_01 - 06 *****************
+// *******************************************************************************
+
+
+// ******************   SOUNDSCAPE TEST  ***************************************
+
+
 // No DSP, no ambients
 "Nothing"
 {
@@ -109,496 +183,158 @@
 		"pitch"		"100"
 		"position"	"0"
 	}
-}
-
-
-//=============================
-//=========exterior============
-//=============================
-
-"Exterior.Outside01a"
-{
-	"dsp"	"1"
-	"dsp_volume" "1.0"
-
-	"playlooping"
+	"playsoundscape"
 	{
-		"volume"	"0.15"
-		"wave"		"ambient/wind/wind1.wav"
-		"pitch"		"100"
+		"name"		"d2_depot_cellblock_medium"
+		"volume"	"0.75"
+		"position"	"2"
 	}
-
-        "playrandom"
+	"playsoundscape"
 	{
-		"time"		"2,7"
-		"volume"	"0.15,0.28"
-		"pitch"		"95,105"
-		"position"	"random"
-		"soundlevel" "SNDLVL_140dB"
-
-		"rndwave"
-		{
-					"wave"  "ambient/animal/swamp_bird1.wav"
-					"wave"  "ambient/animal/swamp_bird4.wav"
-					"wave"  "ambient/animal/swamp_bird5.wav"
-					"wave"  "ambient/animal/swamp_bird6.wav"
-
-		}
+		"name"		"d2_depot_cellblock_medium"
+		"volume"	"0.75"
+		"position"	"2"
 	}
 }
 
-// No birds, but crickets!
-"Exterior.Outside01b"
-{
-	"dsp"	"1"
-	"dsp_volume" "1.0"
 
+
+
+"cabin"
+{
+	"dsp"	"17"
 	"playlooping"
 	{
-		"volume"	"0.15"
-		"wave"		"ambient/wind/wind1.wav"
+		"volume"	"0.5"
 		"pitch"		"100"
+		"wave"		"test/temp/soundscape_test/cabin_ambience.wav"
 	}
 
-        "playrandom"
+	// *** TEST TV ********
+	"playsoundscape"
 	{
-		"time"		"2,7"
-		"volume"	"0.15,0.28"
-		"pitch"		"95,105"
-		"position"	"random"
-		"soundlevel" "SNDLVL_140dB"
-
-		"rndwave"
-		{
-					"wave"  "ambient/animal/cricket6.wav"
-					"wave"  "ambient/animal/cricket7.wav"
-
-		}
-	}
-}
-
-// We took some of this from the L4D1 background map that was only for the X360.
-"Exterior.Rain01a"
-{
-
-	// underlying area "tone"
-	"playlooping"
-	{
-		"volume"	"0.6"
-		"pitch"		"100"
-		"wave"		"ambient/weather/crucial_rumble_rain_nowind.wav"
-	}
-
-
-	// wind gusts
-	"playrandom"
-	{
-		"time"		"15,30"
-		"volume"	"0.25"
-		"pitch"		"90,110"
-
-		"rndwave"
-		{
-			"wave"	"ambient/wind/wind_med1.wav"
-			"wave"	"ambient/wind/wind_med2.wav"
-		}
-	}
-
-	// planes flying overhead
-	"playrandom"
-	{
-		"time"		"60,90"
-		"volume"	".05,.1"
-		"pitch"		"90,100"
-
-		"rndwave"
-		{
-			"wave"	"ambient/overhead/plane1.wav"
-			"wave"	"ambient/overhead/plane2.wav"
-			"wave"	"ambient/overhead/plane3.wav"
-		}
-	}
-
-	// Crows.
-	"playrandom"
-	{
+		"name"		"test_tvset"
+		"volume"	"1"
 		"position"	"0"
-		"time"			"20,40"
-		"pitch"			"95,102"
-		"volume"		"0.3"
-		"soundlevel"  	"SNDLVL_NORM"
-
-		"rndwave"
-		{
-			"wave"	"ambient/animal/crow_1.wav"
-			"wave"	"ambient/animal/crow_2.wav"
-		}
-	}	
-}
-
-// Same as before minus overhead sounds. No crows or airplanes.
-"Exterior.Rain01b"
-{
-
-	// underlying area "tone"
+	
+	}
+	
+	// ** Tower sticking out of wall
 	"playlooping"
 	{
 		"volume"	"0.6"
+		"wave"		"test/temp/soundscape_test/cabin_wall.wav"
 		"pitch"		"100"
-		"wave"		"ambient/weather/crucial_rumble_rain_nowind.wav"
+		"attenuation"	"2"
+		"position"	"1"
 	}
 
 
-	// wind gusts
+	// Random Sounds for Wall
 	"playrandom"
 	{
-		"time"		"15,30"
-		"volume"	"0.25"
-		"pitch"		"90,110"
+		// time, volume, pitch, attenuation are all random intervals ( i.e. minval, maxval )
+		// every 0.5 to 2 seconds
+		"time"		"1,4"
 
+		// at a volume of 0.25 to 0.25
+		"volume"	"0.5,0.8"
+
+		// at a pitch of 90 to 100
+		"pitch"		"80,120"
+
+		// play one of these .wav files randomly each time
 		"rndwave"
 		{
-			"wave"	"ambient/wind/wind_med1.wav"
-			"wave"	"ambient/wind/wind_med2.wav"
+			"wave"	"test/temp/soundscape_test/wall1.wav"
+			"wave"	"test/temp/soundscape_test/wall2.wav"
+			"wave"	"test/temp/soundscape_test/wall3.wav"
+			"wave"	"test/temp/soundscape_test/wall4.wav"
 		}
+		
+		// omit position for ambient sounds
+		"position"	"1"
+		// only required if "position" is present
+		"attenuation"	"2"
 	}
+
+
+
 }
 
-//=============================
-//=========interior============
-//=============================
 
-// Base interior sounds. We can call these for more complex soundcapes.
-"Interior.Rain"
+"cabin_outdoor"
 {
-	"dsp"	"1"
-
-	// underlying area "tone"
+	"dsp"	"20"
 	"playlooping"
 	{
 		"volume"	"1"
 		"pitch"		"100"
-		"wave"		"ambient\ambience\rainscapes\interior_rain_med_loop.wav"
+		"wave"		"test/temp/soundscape_test/outdoor.wav"
 	}
-}
 
-"Interior.RainMed"
-{
-	"dsp"	"1"
-
-	// underlying area "tone"
-	"playlooping"
+	"playrandom"
 	{
-		"volume"	".85"
-		"pitch"		"100"
-		"wave"		"ambient\ambience\rainscapes\interior_rain_med_loop.wav"
+		// time, volume, pitch, attenuation are all random intervals ( i.e. minval, maxval )
+		// every 0.5 to 2 seconds
+		"time"		"0.1, 0.1"
+
+		// at a volume of 0.25 to 0.25
+		"volume"	"0.5,1"
+
+		// at a pitch of 90 to 100
+		"pitch"		"50,120"
+
+		// play one of these .wav files randomly each time
+		"rndwave"
+		{
+			"wave"	"test/temp/soundscape_test/music_snippet1.wav"
+			"wave"	"test/temp/soundscape_test/music_snippet2.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet3.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet4.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet5.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet6.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet7.wav"
+			//"wave"	"test/temp/soundscape_test/music_snippet8.wav"
+		}
+		
+
 	}
+
 }
 
-"Interior.RainSoft"
+"test_tvset"
 {
 	"dsp"	"1"
-
-	// underlying area "tone"
 	"playlooping"
-	{
-		"volume"	".65"
-		"pitch"		"100"
-		"wave"		"ambient\ambience\rainscapes\interior_rain_med_loop.wav"
-	}
-}
-
-//=====================
-
-"Interior01"
-{
-	"dsp"	"1"
-	"dsp_volume" "1.0"
-	
-        "playlooping"
 	{
 		"volume"	"0.15"
-		"wave"		"*scapes/interior2/base.wav"
 		"pitch"		"100"
-		"attenuation"	"0"
+
+		"wave"		"test/temp/soundscape_test/tv_music.wav"
+		"position"	"0"
+		"attenuation"	"2"
+
 	}
+
 
 	"playrandom"
 	{
-		"time"		"2,7"
-		"volume"	"0.15,0.28"
+		"time"		"0.1, 0.3"
+		"volume"	"0.1,0.15"
 		"pitch"		"95,105"
-		"position"	"random"
-		"soundlevel" "SNDLVL_140dB"
+		"attenuation"	"2"
+		"position"	"0"
 
 		"rndwave"
 		{
-					"wave"  "ambient/materials/rustypipes1.wav"
-					"wave"  "ambient/materials/rustypipes2.wav"
-					"wave"  "ambient/materials/rustypipes3.wav"
+			"wave"	"test/temp/soundscape_test/music_snippet1.wav"
+			"wave"	"test/temp/soundscape_test/music_snippet2.wav"
+			"wave"	"test/temp/soundscape_test/music_snippet3.wav"
+
 		}
-	}
-}
-
-"Interior01_Rain"
-{
-	"dsp"	"1"
-	"dsp_volume" "1.0"
-	
-        "playlooping"
-	{
-		"volume"	"0.15"
-		"wave"		"*scapes/interior2/base.wav"
-		"pitch"		"100"
-		"attenuation"	"0"
+		
 	}
 
-	"playrandom"
-	{
-		"time"		"2,7"
-		"volume"	"0.15,0.28"
-		"pitch"		"95,105"
-		"position"	"random"
-		"soundlevel" "SNDLVL_140dB"
 
-		"rndwave"
-		{
-					"wave"  "ambient/materials/rustypipes1.wav"
-					"wave"  "ambient/materials/rustypipes2.wav"
-					"wave"  "ambient/materials/rustypipes3.wav"
-		}
-	}
-
-//rain soft
-	"playsoundscape" 
-	{
-		"name"	"Interior.RainSoft"
-		"volume" "1"
-	}
-}
-
-// Office from L4D1's urban.office
-"Interior_Office01a"
-{
-	"dsp"	"1"
-
-	// underlying area "tone"
-	"playlooping"
-	{
-		"volume"	"0.35"
-		"pitch"		"100"
-		"wave"		"ambient/atmosphere/crucial_indoor1.wav"
-	}
-	"playlooping"
-	{
-		"volume"	"0.55"
-		"pitch"		"100"
-		"wave"		"ambient/atmosphere/crucial_quiet_cellblock_amb.wav"
-	}
-
-}
-
-"Interior_Office01b"
-{
-	"dsp"	"1"
-
-	// underlying area "tone"
-	"playlooping"
-	{
-		"volume"	"0.35"
-		"pitch"		"100"
-		"wave"		"ambient/atmosphere/crucial_indoor1.wav"
-	}
-	"playlooping"
-	{
-		"volume"		".20"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_02.wav"
-	}
-
-}
-
-// Office from L4D1's urban.office with rain
-"Interior.Office01a_Rain"
-{
-	"dsp"	"1"
-
-	// underlying area "tone"
-	"playlooping"
-	{
-		"volume"	"0.35"
-		"pitch"		"100"
-		"wave"		"ambient/atmosphere/crucial_indoor1.wav"
-	}
-	"playlooping"
-	{
-		"volume"	"0.55"
-		"pitch"		"100"
-		"wave"		"ambient/atmosphere/crucial_quiet_cellblock_amb.wav"
-	}
-
-//rain soft
-	"playsoundscape" 
-	{
-		"name"	"Interior.RainSoft"
-		"volume" "0.2"
-	}
-
-}
-
-"Interior_Office01b_Rain"
-{
-	"dsp"	"1"
-
-	// underlying area "tone"
-	"playlooping"
-	{
-		"volume"	"0.35"
-		"pitch"		"100"
-		"wave"		"ambient/atmosphere/crucial_indoor1.wav"
-	}
-	"playlooping"
-	{
-		"volume"		".20"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_02.wav"
-	}
-
-//rain soft
-	"playsoundscape" 
-	{
-		"name"	"Interior.RainSoft"
-		"volume" "0.2"
-	}
-
-}
-
-// CSGO's office
-"Interior.Office02a"
-{
-	"dsp"	"1"
-	"fadetime" "0.5"
-
-	"playlooping"
-	{
-		"volume"		".6"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_01.wav"
-	}
-	
-	"playlooping"
-	{
-		"volume"		".2"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_02.wav"
-	}
-}
-
-// CSGO's office with rain.
-"Interior.Office02a_Rain"
-{
-	"dsp"	"1"
-	"fadetime" "0.5"
-
-	"playlooping"
-	{
-		"volume"		".6"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_01.wav"
-	}
-	
-	"playlooping"
-	{
-		"volume"		".2"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_02.wav"
-	}
-
-//rain soft
-	"playsoundscape" 
-	{
-		"name"	"Interior.RainSoft"
-		"volume" "0.2"
-	}
-}
-
-// 02a, but more alive with phones and machines.
-"Interior.Office02b"
-{
-	"dsp"	"1"
-	"fadetime" "0.5"
-
-	"playlooping"
-	{
-		"volume"		".6"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_01.wav"
-	}
-	
-	"playlooping"
-	{
-		"volume"		".2"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_02.wav"
-	}
-
-	"playrandom"
-	{
-		"time"		"20,40"
-		"volume"	"0.2"
-		"pitch"		"100"
-		"SNDLVL_NORM" "SNDLVL_140dB"
-		"position"	"random"
-
-		"rndwave"
-		{
-			"wave"  "ambient/machines/phones/phone_office01.wav"
-			"wave"  "ambient/machines/phones/phone_office02.wav"
-			"wave"  "ambient/machines/phones/phone_answeringmachine.wav"
-		}
-	}
-}
-
-
-"Interior.Office02b_Rain"
-{
-	"dsp"	"1"
-	"fadetime" "0.5"
-
-	"playlooping"
-	{
-		"volume"		".6"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_01.wav"
-	}
-	
-	"playlooping"
-	{
-		"volume"		".2"
-		"pitch"		"100"
-		"wave"		"ambient\tones\office_room_tone_02.wav"
-	}
-
-	"playrandom"
-	{
-		"time"		"20,40"
-		"volume"	"0.2"
-		"pitch"		"100"
-		"SNDLVL_NORM" "SNDLVL_140dB"
-		"position"	"random"
-
-		"rndwave"
-		{
-			"wave"  "ambient/machines/phones/phone_office01.wav"
-			"wave"  "ambient/machines/phones/phone_office02.wav"
-			"wave"  "ambient/machines/phones/phone_answeringmachine.wav"
-		}
-	}
-
-//rain soft
-	"playsoundscape" 
-	{
-		"name"	"Interior.RainSoft"
-		"volume" "0.2"
-	}
 }

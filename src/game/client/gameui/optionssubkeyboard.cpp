@@ -13,7 +13,6 @@
 #include "vgui_controls/Label.h"
 #include "vgui_controls/ListPanel.h"
 #include "vgui_controls/QueryBox.h"
-#include "vgui_controls/ScrollBar.h"
 
 #include "vgui/Cursor.h"
 #include "vgui/IVGui.h"
@@ -31,7 +30,6 @@
 #include "vstdlib/IKeyValuesSystem.h"
 #include "tier2/tier2.h"
 #include "inputsystem/iinputsystem.h"
-#include "gameui_util.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -42,32 +40,9 @@ using namespace vgui;
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-COptionsSubKeyboard::COptionsSubKeyboard(vgui::Panel *parent) : EditablePanel(parent, "OptionsSubKeyboard" )
+COptionsSubKeyboard::COptionsSubKeyboard(vgui::Panel *parent) : PropertyPage(parent, NULL)
 {
-	//vgui::HScheme scheme = vgui::scheme()->LoadSchemeFromFile("resource/SwarmFrameScheme.res", "SwarmFrameScheme");
-	vgui::HScheme scheme = vgui::scheme()->LoadSchemeFromFile("resource/menuscheme.res", "SwarmScheme");
-	SetScheme(scheme);
-
-	Q_memset( m_Bindings, 0, sizeof( m_Bindings ));
-
-	m_nSplitScreenUser = 0;
-
-	// For joystick buttons, controls which user are binding/unbinding
-	if ( !IsX360() )
-	{
-		//HACK HACK:  Probably the entire gameui needs to have a splitscrene context for which player the settings apply to, but this is only
-		// on the PC...
-		static CGameUIConVarRef in_forceuser( "in_forceuser" );
-
-		if ( in_forceuser.IsValid() )
-		{
-			m_nSplitScreenUser = clamp( in_forceuser.GetInt(), 0, 1 );
-		}
-		else
-		{
-			m_nSplitScreenUser = MAX( 0, engine->GetActiveSplitScreenPlayerSlot() );
-		}
-	}
+	memset( m_Bindings, 0, sizeof( m_Bindings ));
 
 	// create the key bindings list
 	CreateKeyBindingList();
@@ -83,7 +58,6 @@ COptionsSubKeyboard::COptionsSubKeyboard(vgui::Panel *parent) : EditablePanel(pa
 
 	m_pSetBindingButton->SetEnabled(false);
 	m_pClearBindingButton->SetEnabled(false);
-	SetPaintBackgroundEnabled( false );
 }
 
 //-----------------------------------------------------------------------------
@@ -113,9 +87,6 @@ void COptionsSubKeyboard::OnResetData()
 void COptionsSubKeyboard::OnApplyChanges()
 {
 	ApplyAllBindings();
-
-	CGameUIConVarRef con_enable( "con_enable" );
-	con_enable.SetValue( GetControlInt( "ConsoleCheck", 0 ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -125,7 +96,6 @@ void COptionsSubKeyboard::CreateKeyBindingList()
 {
 	// Create the control
 	m_pKeyBindList = new VControlsListPanel(this, "listpanel_keybindlist");
-	m_pKeyBindList->GetScrollBar()->UseImages( "scroll_up", "scroll_down", "scroll_line", "scroll_box" );
 }
 
 //-----------------------------------------------------------------------------
@@ -168,8 +138,7 @@ void COptionsSubKeyboard::OnCommand( const char *command )
 	}
 	else if ( !m_pKeyBindList->IsCapturing() && !stricmp( command, "ClearKey" ) )
 	{
-		//OnKeyCodePressed( ButtonCodeToJoystickButtonCode( KEY_DELETE, CL4DBasePanel::GetSingleton().GetLastActiveUserId() ) );
-		OnKeyCodePressed( KEY_DELETE ); // <<< PC only code, no need for joystick management
+		OnKeyCodePressed(KEY_DELETE);
         m_pKeyBindList->RequestFocus();
 	}
 	else if ( !stricmp(command, "Advanced") )
@@ -253,16 +222,9 @@ void COptionsSubKeyboard::ParseActionDescriptions( void )
 			if (!stricmp(szBinding, "blank"))
 			{
 				// add header item
-				int nColumn1 = 286;
-				int nColumn2 = 128;
-				if ( IsProportional() )
-				{
-					nColumn1 = vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), nColumn1 );
-					nColumn2 = vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), nColumn2 );
-				}
 				m_pKeyBindList->AddSection(++sectionIndex, szDescription);
-				m_pKeyBindList->AddColumnToSection(sectionIndex, "Action", szDescription, SectionedListPanel::COLUMN_BRIGHT, nColumn1 );
-				m_pKeyBindList->AddColumnToSection(sectionIndex, "Key", "#GameUI_KeyButton", SectionedListPanel::COLUMN_BRIGHT, nColumn2 );
+				m_pKeyBindList->AddColumnToSection(sectionIndex, "Action", szDescription, SectionedListPanel::COLUMN_BRIGHT, 286);
+				m_pKeyBindList->AddColumnToSection(sectionIndex, "Key", "#GameUI_KeyButton", SectionedListPanel::COLUMN_BRIGHT, 128);
 			}
 			else
 			{
@@ -434,29 +396,16 @@ void COptionsSubKeyboard::FillInCurrentBindings( void )
 	ClearBindItems();
 
 	bool bJoystick = false;
-	CGameUIConVarRef var( "joystick" );
+	ConVarRef var( "joystick" );
 	if ( var.IsValid() )
 	{
 		bJoystick = var.GetBool();
 	}
 
-	CGameUIConVarRef con_enable( "con_enable" );
-	if ( con_enable.IsValid() )
-	{
-		SetControlInt("ConsoleCheck", con_enable.GetInt() ? 1 : 0);
-	}
-
 	for ( int i = 0; i < BUTTON_CODE_LAST; i++ )
 	{
-		ButtonCode_t bc = ( ButtonCode_t )i;
-
-		bool bIsJoystickCode = IsJoystickCode( bc );
-		// Skip Joystick buttons for the "other" user
-		if ( bIsJoystickCode && GetJoystickForCode( bc ) != m_nSplitScreenUser )
-			continue;
-
 		// Look up binding
-		const char *binding = gameuifuncs->GetBindingForButtonCode( bc );
+		const char *binding = gameuifuncs->GetBindingForButtonCode( (ButtonCode_t)i );
 		if ( !binding )
 			continue;
 
@@ -465,7 +414,7 @@ void COptionsSubKeyboard::FillInCurrentBindings( void )
 		if ( item )
 		{
 			// Bind it by name
-			const char *keyName = g_pInputSystem->ButtonCodeToString( bc );
+			const char *keyName = g_pInputSystem->ButtonCodeToString( (ButtonCode_t)i );
 
 			// Already in list, means user had two keys bound to this item.  We'll only note the first one we encounter
 			char const *currentKey = item->GetString( "Key", "" );
@@ -474,19 +423,19 @@ void COptionsSubKeyboard::FillInCurrentBindings( void )
 				ButtonCode_t currentBC = (ButtonCode_t)gameuifuncs->GetButtonCodeForBind( currentKey );
 
 				// If we're using a joystick, joystick bindings override keyboard ones
-				bool bShouldOverride = bJoystick && bIsJoystickCode && !IsJoystickCode(currentBC);
+				bool bShouldOverride = bJoystick && IsJoystickCode((ButtonCode_t)i) && !IsJoystickCode(currentBC);
 
 				if ( !bShouldOverride )
 					continue;
 
 				// Remove the key we're about to override from the unbinding list
-				m_KeysToUnbind.FindAndRemove( currentBC );
+				m_KeysToUnbind.FindAndRemove( currentKey );
 			}
 
 			AddBinding( item, keyName );
 
 			// remember to apply unbinding of this key when we apply
-			m_KeysToUnbind.AddToTail( bc );
+			m_KeysToUnbind.AddToTail( keyName );
 		}
 	}
 }
@@ -526,29 +475,29 @@ void COptionsSubKeyboard::SaveCurrentBindings( void )
 //-----------------------------------------------------------------------------
 // Purpose: Tells the engine to bind a key
 //-----------------------------------------------------------------------------
-void COptionsSubKeyboard::BindKey( ButtonCode_t bc, const char *binding )
+void COptionsSubKeyboard::BindKey( const char *key, const char *binding )
 {
-	char const *pszKeyName = g_pInputSystem->ButtonCodeToString( bc );
-	Assert( pszKeyName );
-	if ( !pszKeyName || !*pszKeyName )
-		return;
-
-	int nSlot = GetJoystickForCode( bc );
-	engine->ClientCmd_Unrestricted( UTIL_va( "cmd%d bind \"%s\" \"%s\"\n", nSlot + 1, pszKeyName, binding ) );
+#ifndef _XBOX
+	engine->ClientCmd_Unrestricted( UTIL_va( "bind \"%s\" \"%s\"\n", key, binding ) );
+#else
+	char buff[256];
+	Q_snprintf(buff, sizeof(buff), "bind \"%s\" \"%s\"\n", key, binding);
+	engine->ClientCmd_Unrestricted(buff);
+#endif
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Tells the engine to unbind a key
 //-----------------------------------------------------------------------------
-void COptionsSubKeyboard::UnbindKey( ButtonCode_t bc )
+void COptionsSubKeyboard::UnbindKey( const char *key )
 {
-	char const *pszKeyName = g_pInputSystem->ButtonCodeToString( bc );
-	Assert( pszKeyName );
-	if ( !pszKeyName || !*pszKeyName )
-		return;
-
-	int nSlot = GetJoystickForCode( bc );
-	engine->ClientCmd_Unrestricted( UTIL_va( "cmd%d unbind \"%s\"\n", nSlot + 1, pszKeyName ) );
+#ifndef _XBOX
+	engine->ClientCmd_Unrestricted( UTIL_va( "unbind \"%s\"\n", key ) );
+#else
+	char buff[256];
+	Q_snprintf(buff, sizeof(buff), "unbind \"%s\"\n", key);
+	engine->ClientCmd_Unrestricted(buff);
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -557,11 +506,10 @@ void COptionsSubKeyboard::UnbindKey( ButtonCode_t bc )
 void COptionsSubKeyboard::ApplyAllBindings( void )
 {
 	// unbind everything that the user unbound
-	for (int i = 0; i < m_KeysToUnbind.Count(); i++)
+	{for (int i = 0; i < m_KeysToUnbind.Count(); i++)
 	{
-		ButtonCode_t bc = m_KeysToUnbind[ i ];
-		UnbindKey( bc );
-	}
+		UnbindKey(m_KeysToUnbind[i].String());
+	}}
 	m_KeysToUnbind.RemoveAll();
 
 	// free binding memory
@@ -584,14 +532,9 @@ void COptionsSubKeyboard::ApplyAllBindings( void )
 		keyname = item->GetString( "Key", "" );
 		if ( keyname && keyname[ 0 ] )
 		{
-			ButtonCode_t code = g_pInputSystem->StringToButtonCode( keyname );
-			if ( IsJoystickCode( code ) )
-			{
-				code = ButtonCodeToJoystickButtonCode( code, m_nSplitScreenUser );
-			}
-
 			// Tell the engine
-			BindKey( code, binding );
+			BindKey( keyname, binding );
+            ButtonCode_t code = g_pInputSystem->StringToButtonCode( keyname );
             if ( code != BUTTON_CODE_INVALID )
 			{
 				m_Bindings[ code ].binding = UTIL_CopyString( binding );
@@ -613,16 +556,10 @@ void COptionsSubKeyboard::FillInDefaultBindings( void )
 	if (fh == FILESYSTEM_INVALID_HANDLE)
 		return;
 
-	// L4D: also unbind other keys
-	engine->ClientCmd_Unrestricted( "unbindall\n" );
-
-	int size = g_pFullFileSystem->Size(fh) + 1;
+	int size = g_pFullFileSystem->Size(fh);
 	CUtlBuffer buf( 0, size, CUtlBuffer::TEXT_BUFFER );
 	g_pFullFileSystem->Read( buf.Base(), size, fh );
 	g_pFullFileSystem->Close(fh);
-
-	// NULL terminate!
-	((char*)buf.Base())[ size - 1 ] = '\0';
 
 	// Clear out all current bindings
 	ClearBindItems();
@@ -634,33 +571,21 @@ void COptionsSubKeyboard::FillInDefaultBindings( void )
 	{
 		char cmd[64];
 		data = UTIL_Parse( data, cmd, sizeof(cmd) );
-		if ( cmd[ 0 ] == '\0' )
+		if ( strlen( cmd ) <= 0 )
 			break;
 
-		if ( !Q_stricmp(cmd, "bind") ||
-		     !Q_stricmp(cmd, "cmd2 bind") )
+		if ( !stricmp(cmd, "bind") )
 		{
-			// FIXME:  If we ever support > 2 player splitscreen this will need to be reworked.
-			int nJoyStick = 0;
-			if ( !stricmp(cmd, "cmd2 bind") )
-			{
-				nJoyStick = 1;
-			}
-
 			// Key name
 			char szKeyName[256];
 			data = UTIL_Parse( data, szKeyName, sizeof(szKeyName) );
-			if ( szKeyName[ 0 ] == '\0' )
+			if ( strlen( szKeyName ) <= 0 )
 				break; // Error
 
 			char szBinding[256];
 			data = UTIL_Parse( data, szBinding, sizeof(szBinding) );
-			if ( szKeyName[ 0 ] == '\0' )  
+			if ( strlen( szKeyName ) <= 0 )  
 				break; // Error
-
-			// Skip it if it's a bind for the other slit
-			if ( nJoyStick != m_nSplitScreenUser )
-				continue;
 
 			// Find item
 			KeyValues *item = GetItemForBinding( szBinding );
@@ -670,30 +595,19 @@ void COptionsSubKeyboard::FillInDefaultBindings( void )
 				AddBinding( item, szKeyName );
 			}
 		}
-		else
-		{
-			// L4D: Use Defaults also resets cvars listed in config_default.cfg
-			CGameUIConVarRef var( cmd );
-			if ( var.IsValid() )
-			{
-				char szValue[256] = "";
-				data = UTIL_Parse( data, szValue, sizeof(szValue) );
-				var.SetValue( szValue );
-			}
-		}
 	}
 	
 	PostActionSignal(new KeyValues("ApplyButtonEnable"));
 
 	// Make sure console and escape key are always valid
     KeyValues *item = GetItemForBinding( "toggleconsole" );
-    if ( item )
+    if (item)
     {
         // Bind it
         AddBinding( item, "`" );
     }
     item = GetItemForBinding( "cancelselect" );
-    if ( item )
+    if (item)
     {
         // Bind it
         AddBinding( item, "ESCAPE" );
@@ -775,8 +689,6 @@ void COptionsSubKeyboard::OnThink()
 {
 	BaseClass::OnThink();
 
-	m_pKeyBindList->GetScrollBar()->UseImages( "scroll_up", "scroll_down", "scroll_line", "scroll_box" );
-
 	if ( m_pKeyBindList->IsCapturing() )
 	{
 		ButtonCode_t code = BUTTON_CODE_INVALID;
@@ -855,13 +767,13 @@ public:
 		input()->SetAppModalSurface(GetVPanel());
 
 		// reset the data
-		CGameUIConVarRef con_enable( "con_enable" );
+		ConVarRef con_enable( "con_enable" );
 		if ( con_enable.IsValid() )
 		{
 			SetControlInt("ConsoleCheck", con_enable.GetInt() ? 1 : 0);
 		}
 
-		CGameUIConVarRef hud_fastswitch( "hud_fastswitch", true );
+		ConVarRef hud_fastswitch( "hud_fastswitch" );
 		if ( hud_fastswitch.IsValid() )
 		{
 			SetControlInt("FastSwitchCheck", hud_fastswitch.GetInt() ? 1 : 0);
@@ -871,10 +783,10 @@ public:
 	virtual void OnApplyData()
 	{
 		// apply data
-		CGameUIConVarRef con_enable( "con_enable" );
+		ConVarRef con_enable( "con_enable" );
 		con_enable.SetValue( GetControlInt( "ConsoleCheck", 0 ) );
 
-		CGameUIConVarRef hud_fastswitch( "hud_fastswitch", true );
+		ConVarRef hud_fastswitch( "hud_fastswitch" );
 		hud_fastswitch.SetValue( GetControlInt( "FastSwitchCheck", 0 ) );
 	}
 

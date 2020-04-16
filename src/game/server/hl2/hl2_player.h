@@ -13,11 +13,6 @@
 #include "simtimer.h"
 #include "soundenvelope.h"
 
-#ifdef HL2_PLAYERANIMSTATE
-#include "hl2_playeranimstate.h"
-#include "multiplayer/basenetworkedplayer.h"
-#endif
-
 // In HL2MP we need to inherit from  BaseMultiplayerPlayer!
 #if defined ( HL2MP )
 #include "basemultiplayerplayer.h"
@@ -85,9 +80,7 @@ public:
 // >> HL2_PLAYER
 //=============================================================================
 class CHL2_Player
-#ifdef HL2_PLAYERANIMSTATE
-	: public CBaseNetworkedPlayer
-#elif HL2MP
+#ifdef HL2MP
 	: public CBaseMultiplayerPlayer
 #else
 	: public CBasePlayer
@@ -95,9 +88,7 @@ class CHL2_Player
 {
 public:
 
-#if defined ( HL2_PLAYERANIMSTATE )
-	DECLARE_CLASS( CHL2_Player, CBaseNetworkedPlayer );
-#elif HL2MP
+#if defined ( HL2MP )
 	DECLARE_CLASS( CHL2_Player, CBaseMultiplayerPlayer );
 #else
 	DECLARE_CLASS( CHL2_Player, CBasePlayer );
@@ -345,14 +336,6 @@ private:
 	CNetworkVar( bool, m_fIsSprinting );
 	CNetworkVarForDerived( bool, m_fIsWalking );
 
-#ifdef HL2_PLAYERANIMSTATE
-	CNetworkQAngle(m_angEyeAngles);
-	CHL2PlayerAnimState*   m_PlayerAnimState;
-	void DoAnimationEvent(PlayerAnimEvent_t event, int nData);
-	virtual void SetAnimation(PLAYER_ANIM playerAnim);
-	void SetupBones(matrix3x4_t *pBoneToWorld, int boneMask);
-#endif
-
 protected:	// Jeep: Portal_Player needs access to this variable to overload PlayerUse for picking up objects through portals
 	// This player's HL2 specific data that should only be replicated to 
 	//  the player and not to other players.
@@ -428,6 +411,5 @@ void CHL2_Player::DisableCappedPhysicsDamage()
 {
 	m_bUseCappedPhysicsDamageTable = false;
 }
-
 
 #endif	//HL2_PLAYER_H

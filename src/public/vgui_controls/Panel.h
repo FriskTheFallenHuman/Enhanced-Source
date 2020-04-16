@@ -45,6 +45,8 @@
 class CUtlBuffer;
 struct DmxElementUnpackStructure_t;
 
+class BufferCallPaintTraverse;
+
 namespace vgui
 {
 
@@ -308,6 +310,9 @@ class Panel : public IClientPanel
 	DECLARE_DMXELEMENT_UNPACK_NAMESPACE(vgui);
 
 public:
+	// Sander: Very ugly hack because I don't have the VGUI source code..
+	friend class ::BufferCallPaintTraverse;
+
 	// For property mapping
 	static void InitPropertyConverters( void );
 	static void AddPropertyConverter( char const *typeName, IPanelAnimationPropertyConverter *converter );

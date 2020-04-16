@@ -61,7 +61,7 @@ public:
 	float	m_flLayerAnimtime;
 	float	m_flLayerFadeOuttime;
 
-private:
+//private:
 	int		m_nOrder;
 	CRangeCheckedVar<int, -1, 65535, 0>		m_nSequence;
 	CRangeCheckedVar<float, -2, 2, 0>		m_flPrevCycle;

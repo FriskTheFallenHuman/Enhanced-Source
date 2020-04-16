@@ -16,7 +16,6 @@
 #include "vgui/IInput.h"
 #include "steam/steam_api.h"
 #include "tier1/strtools.h"
-#include "gameui_util.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -83,8 +82,8 @@ void COptionsSubAudio::OnResetData()
 	// reset the combo boxes
 
 	// close captions
-	CGameUIConVarRef closecaption("closecaption");
-	CGameUIConVarRef cc_subtitles("cc_subtitles");
+	ConVarRef closecaption("closecaption");
+	ConVarRef cc_subtitles("cc_subtitles");
 	if (closecaption.GetBool())
 	{
 		if (cc_subtitles.GetBool())
@@ -102,7 +101,7 @@ void COptionsSubAudio::OnResetData()
 	}
 
 	// speakers
-	CGameUIConVarRef snd_surround_speakers("Snd_Surround_Speakers");
+	ConVarRef snd_surround_speakers("Snd_Surround_Speakers");
 	int speakers = snd_surround_speakers.GetInt();
 	{for (int itemID = 0; itemID < m_pSpeakerSetupCombo->GetItemCount(); itemID++)
 	{
@@ -114,8 +113,8 @@ void COptionsSubAudio::OnResetData()
 	}}
 	
 	// sound quality is made up from several cvars
-	CGameUIConVarRef Snd_PitchQuality("Snd_PitchQuality");
-	CGameUIConVarRef dsp_slow_cpu("dsp_slow_cpu");
+	ConVarRef Snd_PitchQuality("Snd_PitchQuality");
+	ConVarRef dsp_slow_cpu("dsp_slow_cpu");
 	int quality = SOUNDQUALITY_LOW;
 	if (dsp_slow_cpu.GetBool() == false)
 	{
@@ -203,7 +202,7 @@ void COptionsSubAudio::OnApplyChanges()
 	// ConVar *closecaption = (ConVar *)cvar->FindVar("closecaption");
 	int closecaption_value = 0;
 
-	CGameUIConVarRef cc_subtitles( "cc_subtitles" );
+	ConVarRef cc_subtitles( "cc_subtitles" );
 	switch (m_pCloseCaptionCombo->GetActiveItem())
 	{
 	default:
@@ -228,13 +227,13 @@ void COptionsSubAudio::OnApplyChanges()
 	Q_snprintf( cmd, sizeof( cmd ), "closecaption %i\n", closecaption_value );
 	engine->ClientCmd_Unrestricted( cmd );
 
-	CGameUIConVarRef snd_surround_speakers( "Snd_Surround_Speakers" );
+	ConVarRef snd_surround_speakers( "Snd_Surround_Speakers" );
 	int speakers = m_pSpeakerSetupCombo->GetActiveItemUserData()->GetInt( "speakers" );
 	snd_surround_speakers.SetValue( speakers );
 
 	// quality
-	CGameUIConVarRef Snd_PitchQuality( "Snd_PitchQuality" );
-	CGameUIConVarRef dsp_slow_cpu( "dsp_slow_cpu" );
+	ConVarRef Snd_PitchQuality( "Snd_PitchQuality" );
+	ConVarRef dsp_slow_cpu( "dsp_slow_cpu" );
 	int quality = m_pSoundQualityCombo->GetActiveItemUserData()->GetInt( "quality" );
 	switch ( quality )
 	{
@@ -255,7 +254,7 @@ void COptionsSubAudio::OnApplyChanges()
 	};
 
 	// headphones at high quality get enhanced stereo turned on
-	CGameUIConVarRef dsp_enhance_stereo( "dsp_enhance_stereo" );
+	ConVarRef dsp_enhance_stereo( "dsp_enhance_stereo" );
 	if (speakers == 0 && quality == SOUNDQUALITY_HIGH)
 	{
 		dsp_enhance_stereo.SetValue( 1 );
@@ -353,6 +352,47 @@ void COptionsSubAudio::RunTestSpeakers()
 }
 
 //-----------------------------------------------------------------------------
+// Purpose: third-party audio credits dialog
+//-----------------------------------------------------------------------------
+class COptionsSubAudioThirdPartyCreditsDlg : public vgui::Frame
+{
+   DECLARE_CLASS_SIMPLE( COptionsSubAudioThirdPartyCreditsDlg, vgui::Frame );
+public:
+   COptionsSubAudioThirdPartyCreditsDlg( vgui::VPANEL hParent ) : BaseClass( NULL, NULL )
+   {
+      // parent is ignored, since we want look like we're steal focus from the parent (we'll become modal below)
+
+      SetTitle("#GameUI_ThirdPartyAudio_Title", true);
+      SetSize( 500, 200 );
+      LoadControlSettings( "resource/OptionsSubAudioThirdPartyDlg.res" );
+      MoveToCenterOfScreen();
+      SetSizeable( false );
+      SetDeleteSelfOnClose( true );
+   }
+
+   virtual void Activate()
+   {
+      BaseClass::Activate();
+
+      input()->SetAppModalSurface(GetVPanel());
+   }
+
+   void OnKeyCodeTyped(KeyCode code)
+   {
+      // force ourselves to be closed if the escape key it pressed
+      if (code == KEY_ESCAPE)
+      {
+         Close();
+      }
+      else
+      {
+         BaseClass::OnKeyCodeTyped(code);
+      }
+   }
+};
+
+
+//-----------------------------------------------------------------------------
 // Purpose: Open third party audio credits dialog
 //-----------------------------------------------------------------------------
 void COptionsSubAudio::OpenThirdPartySoundCreditsDialog()
@@ -362,50 +402,4 @@ void COptionsSubAudio::OpenThirdPartySoundCreditsDialog()
       m_OptionsSubAudioThirdPartyCreditsDlg = new COptionsSubAudioThirdPartyCreditsDlg(GetVParent());
    }
    m_OptionsSubAudioThirdPartyCreditsDlg->Activate();
-}
-
-
-COptionsSubAudioThirdPartyCreditsDlg::COptionsSubAudioThirdPartyCreditsDlg( vgui::VPANEL hParent ) : BaseClass( NULL, NULL )
-{
-	SetProportional( true );
-
-#ifdef SWARM_DLL
-	// parent is ignored, since we want look like we're steal focus from the parent (we'll become modal below)
-	SetScheme( "SwarmFrameScheme" );
-#endif
-
-	SetTitle( "#GameUI_ThirdPartyAudio_Title", true );
-	SetSize( 
-		vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), 500 ),
-		vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), 200 ) );
-
-	MoveToCenterOfScreen();
-	SetSizeable( false );
-	SetDeleteSelfOnClose( true );
-}
-
-void COptionsSubAudioThirdPartyCreditsDlg::ApplySchemeSettings( IScheme *pScheme )
-{
-	BaseClass::ApplySchemeSettings( pScheme );
-	LoadControlSettings( "resource/OptionsSubAudioThirdPartyDlg.res" );
-}
-
-void COptionsSubAudioThirdPartyCreditsDlg::Activate()
-{
-	BaseClass::Activate();
-
-	input()->SetAppModalSurface(GetVPanel());
-}
-
-void COptionsSubAudioThirdPartyCreditsDlg::OnKeyCodeTyped(vgui::KeyCode code)
-{
-	// force ourselves to be closed if the escape key it pressed
-	if (code == KEY_ESCAPE)
-	{
-		Close();
-	}
-	else
-	{
-		BaseClass::OnKeyCodeTyped(code);
-	}
 }

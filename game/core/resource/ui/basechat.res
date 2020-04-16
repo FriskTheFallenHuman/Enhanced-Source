@@ -6,11 +6,11 @@
 		"fieldName" 		"HudChat"
 		"visible" 		"1"
 		"enabled" 		"1"
-		"xpos"			"170"
-		"ypos"			"354"
+		"xpos"			"10"
+		"ypos"			"275"
 		"wide"	 		"320"
 		"tall"	 		"120"
-		"PaintBackgroundType"	"0"
+		"PaintBackgroundType"	"2"
 	}
 
 	ChatInputLine
@@ -30,10 +30,10 @@
 	{
 		"ControlName"		"Button"
 		"fieldName"		"ChatFiltersButton"
-		"xpos"			"270"
-		"ypos"			"4"
-		"wide"			"40"
-		"tall"			"11"
+		"xpos"			"265"
+		"ypos"			"2"
+		"wide"			"45"
+		"tall"			"15"
 		"autoResize"		"1"
 		"pinCorner"		"0"
 		"visible"		"1"

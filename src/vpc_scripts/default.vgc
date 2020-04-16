@@ -1,16 +1,15 @@
 $Games
 {
-	"DEFERRED"
-	"TEMPLATE"
 	"PORTAL"
-	"PORTAL_TEMPLATE"
 	"HL2"
 	"HL2MP"
-	"HL2_TEMPLATE"
-	"HL2_EPISODIC"
-	"VECTRONIC"
 }
 
 $Conditional	"SOURCESDK" "1"
+
+//$Conditional USE_EPISODIC "0" 	// Use HL2 Episodic? Note: not supported by HL2MP
+//$Conditional USE_SSE "0"          // Use Source Shader Editor?
+//$Conditional USE_DEFFERED "0" 	// Use Deffered Lighting?
+
 $Include		"vpc_scripts\projects.vgc"
 $Include		"vpc_scripts\groups.vgc"

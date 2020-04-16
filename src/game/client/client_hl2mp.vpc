@@ -9,6 +9,8 @@ $Macro GAMENAME 	"hl2mp_template"
 
 $Include "$SRCDIR\game\client\client_base.vpc"
 $Include "$SRCDIR\game\client\client_hl2_base.vpc"
+$Include "$SRCDIR\game\client\client_shadereditor_base.vpc" [$USE_SSE || $USE_DEFFERED]
+$Include "$SRCDIR\game\client\client_deferred_base.vpc" [$USE_DEFFERED]
 
 $Configuration
 {
@@ -23,6 +25,9 @@ $Project "Client (HL2MP)"
 {
 	$Folder	"Source Files"
 	{
+		-$File	"hud_chat.cpp"
+		-$File	"$SRCDIR\game\shared\weapon_parse_default.cpp"
+
 		$File	"c_team_train_watcher.cpp"
 		$File	"c_team_train_watcher.h"
 		$File	"hud_voicestatus.cpp"
@@ -30,6 +35,15 @@ $Project "Client (HL2MP)"
 		$File	"$SRCDIR\game\shared\predicted_viewmodel.h"
 		$File	"$SRCDIR\game\shared\teamplay_round_timer.cpp"
 		$File	"$SRCDIR\game\shared\teamplay_round_timer.h"
+
+		$Folder	"HL2 DLL"
+		{
+			-$File	"$SRCDIR\game\shared\hl2\achievements_hl2.cpp"
+			-$File	"hl2\c_weapon_physcannon.cpp"
+			-$File	"hl2\c_weapon_stunstick.cpp"
+			-$File	"hl2\clientmode_hlnormal.cpp"
+			-$File	"hl2\clientmode_hlnormal.h" 
+		}
 
 		$Folder	"HL2MP"
 		{
