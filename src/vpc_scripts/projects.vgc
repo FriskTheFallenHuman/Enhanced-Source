@@ -10,15 +10,11 @@
 
 $Project "client"
 {
-	"game\client\client_portal.vpc"		[$PORTAL]
-	"game\client\client_hl2.vpc"		[$HL2]
 	"game\client\client_hl2mp.vpc"		[$HL2MP]
 }
 
 $Project "server"
 {
-	"game\server\server_portal.vpc"		[$PORTAL]
-	"game\server\server_hl2.vpc"		[$HL2]
 	"game\server\server_hl2mp.vpc"		[$HL2MP]
 }
 
@@ -29,7 +25,6 @@ $Project "shaderlib"
 
 $Project "game_shader"
 {
-	"materialsystem\stdshaders\game_shader_dx9_portal.vpc"	[$PORTAL]
 	"materialsystem\deferredshaders\game_shader_generic_deferred.vpc"	[$USE_DEFFERED]
 }
 

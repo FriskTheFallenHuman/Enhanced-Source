@@ -12,16 +12,6 @@ echo Games
 echo --------
 echo.
 
-set /p HL2=Compile Half-Life 2? (y): 
-If not "%HL2%"=="n" (
-    set game=%game% /hl2
-)
-
-set /p Portal=Compile Portal? (y): 
-If not "%Portal%"=="n" (
-    set game=%game% /portal
-)
-
 set /p HL2MP=Compile Half-Life 2 DM? (y): 
 If not "%HL2MP%"=="n" (
     set game=%game% /hl2mp

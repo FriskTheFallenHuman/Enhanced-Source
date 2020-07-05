@@ -1,1 +1,0 @@
-@start swarm.exe -override_vpk -sw -w 1280 -h 720 -dev -console -allowdebug -condebug -conclear -allowdebug -game hl2_template
